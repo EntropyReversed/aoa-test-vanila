@@ -1,4 +1,4 @@
-import { Group, LinearFilter, LinearMipmapLinearFilter, MeshStandardMaterial } from "three";
+import { Group, MeshStandardMaterial } from "three";
 import Manager from "../sceneSetup/Manager";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";

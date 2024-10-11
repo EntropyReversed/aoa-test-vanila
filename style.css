@@ -22,7 +22,8 @@ body {
   overflow: hidden;
 }
 
-canvas {
+#scene canvas {
+  position: relative;
   display: block;
 }
 
@@ -91,11 +92,13 @@ body::after {
   --progress: 0;
   position: sticky;
   top: 0;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 2rem;
   z-index: 100;
+  margin-bottom: -100vh;
 }
 
 .loading-screen__text {
@@ -181,4 +184,28 @@ body::after {
   mix-blend-mode: lighten;
   opacity: 0.4;
   pointer-events: none;
+}
+
+.clouds {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  z-index: 0;
+  opacity: 0.8;
+}
+
+.clouds--front {
+  z-index: 2;
+}
+
+.clouds .cloud {
+  grid-column-start: 1;
+  grid-row-start: 1;
+}
+
+.cloud-one {
+  transform: translateX(-10%);
+}
+.cloud-two {
+  transform: translateY(-10%);
 }

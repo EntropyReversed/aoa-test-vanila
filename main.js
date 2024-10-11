@@ -32,7 +32,19 @@ if (wrap) {
     wrapSelector: ".loading-screen",
     textCounterSelector: ".loading-screen__text",
     onComplete: () => {
-      console.log("Loading complete");
+      const clouds = document.querySelectorAll('.cloud img');
+      clouds.forEach(cloud => {
+        cloud.classList.add('load');
+        gsap.fromTo(cloud, {
+          scale: 0.8,
+          opacity: 0,
+        }, {
+          delay: 0.3,
+          opacity: 1,
+          scale: 1,
+          duration: 2,
+        });
+      });
     },
   });
 
