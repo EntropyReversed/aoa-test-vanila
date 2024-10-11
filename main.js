@@ -7,7 +7,7 @@ import { ScrollTrigger } from "gsap/all";
 import TriakisAnimation from "./src/scene/TriakisAnimation";
 import { LazyImages } from "./src/LazyImages";
 gsap.registerPlugin(ScrollTrigger);
-ScrollTrigger.normalizeScroll();
+ScrollTrigger.normalizeScroll(true);
 
 window.addEventListener('DOMContentLoaded', () => {
   new LazyImages();
