@@ -149,7 +149,6 @@ export class Triakis {
       end: "bottom top",
       animation: timelineProjects,
       scrub: 1,
-      markers: true,
     });
     this.debug();
   }
