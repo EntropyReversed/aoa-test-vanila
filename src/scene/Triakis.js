@@ -71,7 +71,26 @@ export class Triakis {
     // this.model.rotation.set(-0.27, -1.02, 0);
 
     gsap.timeline()
-      .to(this.loaderGroup.scale, { x: 1, y: 1, z: 1, duration: 1.5, delay: 0.2, ease: "power2.out" })
+      .to('.loading-screen__images div', {
+        opacity: 1, scale: 1,
+        stagger: {
+          grid: [2, 7],
+          amount: 3,
+          from: 'end',
+        },
+        duration: 1, ease: "none"
+      })
+      .to('.loading-screen__images', {
+        xPercent: 50, duration: 4, ease: "power1.inOut"
+      }, '<+=1')
+      .to('.loading-screen__images div', {
+        opacity: 0, scale: 0.8, stagger: {
+          grid: [2, 7],
+          amount: 1.5,
+          from: 2,
+        }, duration: 1, ease: "none"
+      }, '-=0.5')
+      .to(this.loaderGroup.scale, { x: 1, y: 1, z: 1, duration: 1.5, delay: 0.2, ease: "power2.out" }, '<')
       .to(this.loaderGroup.rotation, { z: 0, duration: 2, ease: "power2.out" }, '<')
       .to('.triakis-section__inner', { opacity: 1, duration: 2, ease: "power2.out" }, '<+=1.5')
 

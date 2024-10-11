@@ -32,7 +32,7 @@ export class LoadingScreen {
         this.loaderWrap,
         {
           opacity: 0,
-          delay: 0.5,
+          delay: 5,
           duration: 1,
           onStart: () => {
             this.onComplete?.();

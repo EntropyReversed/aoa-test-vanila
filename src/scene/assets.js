@@ -18,19 +18,19 @@ export default [
     type: texture,
     path: "/assets/textures/flow1.png",
   },
-  {
-    name: "tealLayer",
-    type: texture,
-    path: "/assets/textures/tealLayer.webp",
-  },
+  // {
+  //   name: "tealLayer",
+  //   type: texture,
+  //   path: "/assets/textures/tealLayer.webp",
+  // },
   {
     name: "colorLayer",
     type: texture,
-    path: "/assets/textures/colorLayer.webp",
+    path: "/assets/textures/colorLayer2.webp",
   },
-  // {
-  //   name: "skyBox",
-  //   type: hdrTexture,
-  //   path: "/assets/textures/colorLayer.hdr",
-  // },
+  {
+    name: "skyBox",
+    type: hdrTexture,
+    path: "/assets/textures/clouds.hdr",
+  },
 ];
