@@ -32,8 +32,8 @@ export class LoadingScreen {
         this.loaderWrap,
         {
           opacity: 0,
-          delay: 5,
-          duration: 1,
+          // delay: 2,
+          duration: 2,
           onStart: () => {
             this.onComplete?.();
             document.body.style.overflow = "auto";

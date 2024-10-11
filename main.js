@@ -39,7 +39,7 @@ if (wrap) {
           scale: 0.8,
           opacity: 0,
         }, {
-          delay: 0.3,
+          delay: 0.5,
           opacity: 1,
           scale: 1,
           duration: 2,
