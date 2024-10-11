@@ -5,8 +5,13 @@ import { LoadingScreen } from "./src/sceneSetup/LoadingScreen";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import TriakisAnimation from "./src/scene/TriakisAnimation";
+import { LazyImages } from "./src/LazyImages";
 gsap.registerPlugin(ScrollTrigger);
 ScrollTrigger.normalizeScroll();
+
+window.addEventListener('DOMContentLoaded', () => {
+  new LazyImages();
+})
 
 const wrap = document.getElementById("scene");
 if (wrap) {
