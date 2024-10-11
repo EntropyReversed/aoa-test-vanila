@@ -1,4 +1,4 @@
-import { Group, MeshStandardMaterial } from "three";
+import { Group, LinearFilter, LinearMipmapLinearFilter, MeshStandardMaterial } from "three";
 import Manager from "../sceneSetup/Manager";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -9,6 +9,7 @@ export class Triakis {
     const { scene, resources, cameraClass } = this.manager;
     this.scene = scene;
     this.camera = cameraClass.camera;
+    this.colorMap = resources.items.colorLayer;
     this.model = resources.items.model.scene.children[0];
     this.refreshDebug = null;
     this.init();
@@ -19,7 +20,7 @@ export class Triakis {
       this.refreshDebug = debug.refresh;
 
       debug.addSceneObject({ name: "Triakis", object: this.model });
-      debug.addSceneObject({ name: "peopleGroup", object: this.peopleGroup });
+      debug.addSceneObject({ name: "projectsGroup", object: this.projectsGroup });
       debug.addSceneObject({ name: "Camera", object: this.camera });
     }
 
@@ -27,15 +28,21 @@ export class Triakis {
   }
 
   init() {
+    // this.colorMap.minFilter = LinearMipmapLinearFilter;
+    // this.colorMap.magFilter = LinearFilter;
+
     this.model.material = new MeshStandardMaterial({
-      roughness: 0.1,
-      metalness: 0.95,
+      color: 'white',
+      map: this.colorMap,
+      metalness: 0.9,
+      roughness: 0.2,
       transparent: true,
     });
     this.model.name = "Triakis";
     this.loaderGroup = new Group();
     this.loaderGroup.name = "LoaderGroup";
     this.loaderGroup.scale.set(0, 0, 0);
+    this.loaderGroup.position.x = -0.015;
     this.loaderGroup.rotation.set(
       Math.PI * -0.1,
       Math.PI,
@@ -47,7 +54,10 @@ export class Triakis {
 
     this.peopleGroup = new Group();
     this.peopleGroup.name = "PeopleGroup";
-    this.peopleGroup.position.set(0, 0.1, 1.5);
+
+    this.projectsGroup = new Group();
+    this.projectsGroup.name = "ProjectsGroup";
+    this.projectsGroup.position.set(0, 0.1, 1.5);
 
     // this.supportGroup.position.set(0, 0, 0);
     // this.supportGroup.scale.set(0, 0, 0);
@@ -56,12 +66,14 @@ export class Triakis {
     this.loaderGroup.add(this.model);
     this.supportGroup.add(this.loaderGroup)
     this.peopleGroup.add(this.supportGroup)
-    this.scene.add(this.peopleGroup);
+    this.projectsGroup.add(this.peopleGroup)
+    this.scene.add(this.projectsGroup);
     // this.model.rotation.set(-0.27, -1.02, 0);
 
     gsap.timeline()
-      .to(this.loaderGroup.scale, { x: 1, y: 1, z: 1, duration: 2, delay: 0.2, ease: "power2.out" })
+      .to(this.loaderGroup.scale, { x: 1, y: 1, z: 1, duration: 1.5, delay: 0.2, ease: "power2.out" })
       .to(this.loaderGroup.rotation, { z: 0, duration: 2, ease: "power2.out" }, '<')
+      .to('.triakis-section__inner', { opacity: 1, duration: 2, ease: "power2.out" }, '<+=1.5')
 
     //supportGroup
     const timelineSupport = gsap.timeline()
@@ -76,24 +88,47 @@ export class Triakis {
       }, '<')
 
 
-    //peopleGroup
-    // const timelinePeople = gsap.timeline()
+    // peopleGroup
+    const timelinePeople = gsap.timeline()
+      .to(this.camera.position, {
+        x: 1, y: 0.15, duration: 1, ease: "none"
+      })
+      .to(this.peopleGroup.rotation, {
+        y: 0.4, z: 3, duration: 1, ease: "none",
+      }, '<')
+      .to(this.peopleGroup.scale, {
+        x: 0.8, y: 0.8, z: 0.8, duration: 1, ease: "none",
+      }, '<')
 
-    //   .to(this.peopleGroup.position, {
-    //     x: -1, duration: 1, ease: "none"
-    //   })
-    //   .to(this.peopleGroup.rotation, {
-    //     x: 0.07, y: 0.34, z: 2.32, duration: 1, ease: "none"
-    //   }, '<')
-
-
+    const timelineProjects = gsap.timeline()
+      .to(this.projectsGroup.position, {
+        x: -0.1, duration: 1, ease: "none",
+      })
+      .to(this.projectsGroup.rotation, {
+        x: -0.41, y: 0.41, z: 4.64, duration: 1, ease: "none",
+      }, '<')
 
 
     ScrollTrigger.create({
-      trigger: '#scene',
+      trigger: '#home',
       start: "top top",
-      end: "bottom top",
+      endTrigger: '#support',
+      end: "top top",
       animation: timelineSupport,
+      scrub: 1,
+    });
+    ScrollTrigger.create({
+      trigger: '#support',
+      start: "top+=30% top",
+      end: "bottom top",
+      animation: timelinePeople,
+      scrub: 1,
+    });
+    ScrollTrigger.create({
+      trigger: '#people',
+      start: "top+=30% top",
+      end: "bottom top",
+      animation: timelineProjects,
       scrub: 1,
       markers: true,
     });

@@ -1,4 +1,4 @@
-import { Clock, NoToneMapping, SRGBColorSpace, WebGLRenderer } from "three";
+import { ACESFilmicToneMapping, Clock, NoToneMapping, SRGBColorSpace, WebGLRenderer } from "three";
 import Manager from "./Manager";
 
 export default class Renderer {
@@ -21,8 +21,9 @@ export default class Renderer {
       antialias: true,
       alpha: true,
       powerPreference: "high-performance",
-      outputColorSpace: SRGBColorSpace,
-      toneMapping: NoToneMapping,
+      outputColorSpace: "srgb",
+      toneMapping: ACESFilmicToneMapping,
+      toneMappingExposure: 1,
     });
     this.renderer.setClearColor(0x000000, 0);
     this.onResize({

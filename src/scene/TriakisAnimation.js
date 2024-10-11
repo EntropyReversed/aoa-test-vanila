@@ -13,31 +13,44 @@ export default class TriakisAnimation {
       {
         type: 'directional',
         color: '#ffffff',
-        intensity: 1,
-        position: [0, 8, 10],
-        target: [0, 0, 0],
-        name: 'Sun'
+        intensity: 4,
+        position: [4, 8, 10],
+        // target: [0, 0, 0],
       },
       {
-        type: 'spot',
+        type: 'directional',
         color: '#ffffff',
-        intensity: 1.5,
-        position: [-3, 3, 8],
-        name: 'Spotlight'
+        intensity: 4,
+        position: [-4, 8, 10],
+        // target: [0, 0, 0],
       },
+      {
+        type: 'directional',
+        color: '#ffffff',
+        intensity: 4,
+        position: [0, 0, -10],
+        // target: [0, 0, 0],
+      },
+      // {
+      //   type: 'spot',
+      //   color: '#ffffff',
+      //   intensity: 10.5,
+      //   position: [-3, 3, 8],
+      //   name: 'Spotlight'
+      // },
       {
         type: 'ambient',
         color: '#ffffff',
-        intensity: 1.2,
+        intensity: 20,
         name: 'Ambient',
       }
     ]
 
     // name from assets
-    this.enviroment.setSkybox({
-      name: 'skyBox',
-      environment: true,
-    });
+    // this.enviroment.setSkybox({
+    //   name: 'skyBox',
+    //   environment: true,
+    // });
 
     lights.forEach(light => this.enviroment.addLight(light));
   }

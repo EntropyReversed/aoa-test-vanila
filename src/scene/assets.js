@@ -24,8 +24,13 @@ export default [
     path: "/assets/textures/tealLayer.webp",
   },
   {
-    name: "skyBox",
-    type: hdrTexture,
-    path: "/assets/textures/clouds.hdr",
-  }
+    name: "colorLayer",
+    type: texture,
+    path: "/assets/textures/colorLayer.webp",
+  },
+  // {
+  //   name: "skyBox",
+  //   type: hdrTexture,
+  //   path: "/assets/textures/colorLayer.hdr",
+  // },
 ];

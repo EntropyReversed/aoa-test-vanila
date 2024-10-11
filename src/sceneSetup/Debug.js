@@ -113,9 +113,9 @@ export class Debug {
   }
 
   createGeometryRotationControls(mesh, folder) {
-    folder.addBinding(mesh.rotation, 'x', { label: 'x', min: -Math.PI, max: Math.PI });
-    folder.addBinding(mesh.rotation, 'y', { label: 'y', min: -Math.PI, max: Math.PI });
-    folder.addBinding(mesh.rotation, 'z', { label: 'z', min: -Math.PI, max: Math.PI });
+    folder.addBinding(mesh.rotation, 'x', { label: 'x', min: -Math.PI * 2, max: Math.PI * 2 });
+    folder.addBinding(mesh.rotation, 'y', { label: 'y', min: -Math.PI * 2, max: Math.PI * 2 });
+    folder.addBinding(mesh.rotation, 'z', { label: 'z', min: -Math.PI * 2, max: Math.PI * 2 });
   }
 
   createLightControls(light, folder) {
@@ -133,7 +133,6 @@ export class Debug {
   }
 
   refresh() {
-    console.log('refresh')
     this.pane.refresh();
   }
 }
