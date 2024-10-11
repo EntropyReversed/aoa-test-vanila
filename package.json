@@ -10,5 +10,11 @@
   },
   "devDependencies": {
     "vite": "^5.4.8"
+  },
+  "dependencies": {
+    "gsap": "^3.12.5",
+    "stats.js": "^0.17.0",
+    "three": "^0.169.0",
+    "tweakpane": "^4.0.4"
   }
 }
