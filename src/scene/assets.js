@@ -13,11 +13,11 @@ export default [
     path: "/assets/models/triakis.glb",
   },
 
-  {
-    name: "flowImage",
-    type: texture,
-    path: "/assets/textures/flow1.png",
-  },
+  // {
+  //   name: "flowImage",
+  //   type: texture,
+  //   path: "/assets/textures/flow1.png",
+  // },
   // {
   //   name: "tealLayer",
   //   type: texture,
