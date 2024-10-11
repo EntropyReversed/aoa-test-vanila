@@ -72,11 +72,17 @@ export class Triakis {
 
     gsap.timeline()
       .to('.loading-screen__images div', {
-        opacity: 1, scale: 1,
+        opacity: 1,
+        scale: 1,
         stagger: {
           grid: [2, 7],
           amount: 3,
           from: 'end',
+        },
+        onStart: () => {
+          gsap.to('.loading-screen__images div', {
+            contentVisibility: 'visible',
+          })
         },
         duration: 1, ease: "none"
       })
@@ -92,7 +98,13 @@ export class Triakis {
       }, '-=0.5')
       .to(this.loaderGroup.scale, { x: 1, y: 1, z: 1, duration: 1.5, delay: 0.2, ease: "power2.out" }, '<')
       .to(this.loaderGroup.rotation, { z: 0, duration: 2, ease: "power2.out" }, '<')
-      .to('.triakis-section__inner', { opacity: 1, duration: 2, ease: "power2.out" }, '<+=1.5')
+      .to('.triakis-section__inner', {
+        opacity: 1, duration: 2, ease: "power2.out", onStart: () => {
+          gsap.to('.triakis-section__inner', {
+            contentVisibility: 'visible',
+          })
+        }
+      }, '<+=1.5')
 
     //supportGroup
     const timelineSupport = gsap.timeline()
