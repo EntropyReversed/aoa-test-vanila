@@ -1,5 +1,6 @@
 import { MeshStandardMaterial } from "three";
 import Manager from "../sceneSetup/Manager";
+import { Triakis } from "./Triakis";
 
 export default class TriakisAnimation {
   constructor() {
@@ -35,7 +36,6 @@ export default class TriakisAnimation {
     // name from assets
     this.enviroment.setSkybox({
       name: 'skyBox',
-      background: true,
       environment: true,
     });
 
@@ -44,45 +44,15 @@ export default class TriakisAnimation {
 
   initScene() {
     this.setUpEnvironment();
-
-    this.model.material = new MeshStandardMaterial({
-      roughness: 0.05,
-      metalness: 0.95,
-      transparent: true,
-    });
-    this.scene.add(this.model);
+    this.triakis = new Triakis();
   }
 
   init() {
     const {
-      wrap,
-      sizes,
-      scene,
       enviroment,
-      resources,
-      rendererClass,
-      cameraClass,
-      signals,
-      raycasterClass,
-      screenSizer,
-      postProcessing
     } = this.manager;
 
-    this.scene = scene;
-    this.sizes = sizes;
-    this.wrap = wrap;
-    this.scene = scene;
-    this.renderer = rendererClass.renderer;
-    this.resources = resources;
     this.enviroment = enviroment;
-    this.camera = cameraClass.camera;
-    this.screenSizer = screenSizer;
-    this.model = resources.items.model.scene.children[0];
-    this.raycaster = raycasterClass;
-    this.postProcessing = postProcessing;
-    this.debugSignal = signals.debug;
-    this.resizeSignal = signals.resize;
-    this.updateSignal = signals.update;
 
     this.initScene();
   }

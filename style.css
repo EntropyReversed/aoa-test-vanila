@@ -11,16 +11,43 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
   min-height: 100vh;
-  margin-top: 100vh;
+}
+
+#scene {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
 }
 
 canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
   display: block;
+}
+
+.triakis-animation {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.triakis-sections {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  margin-top: -100vh;
+}
+
+.triakis-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 0 1px red;
+  width: 100%;
+  height: 100vh;
 }
 
 /* body::before {
@@ -76,6 +103,35 @@ body::after {
   transform: translateX(-50%) scaleX(var(--progress));
 }
 
+.loading-screen__images {
+  --w: 30vw;
+  --h: calc(var(--w) * 1.5s);
+  display: flex;
+}
+
+.loading-screen__images img {
+  object-fit: cover;
+  width: var(--w);
+  height: var(--h);
+}
+
+.loading-screen__images img:nth-child(odd) {
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  margin-left: calc(var(--w) * -0.5);
+}
+
+.loading-screen__images img:nth-child(even) {
+  clip-path: polygon(50% 100%, 0 0, 100% 0);
+  margin-left: calc(var(--w) * -0.5);
+}
+
 .tp-dfwv {
   position: fixed !important;
+}
+
+#scene {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url('/assets/textures/tealLayer.webp');
 }

@@ -24,7 +24,7 @@ export default class Renderer {
       outputColorSpace: SRGBColorSpace,
       toneMapping: NoToneMapping,
     });
-    this.renderer.setClearColor(0x000000, 1);
+    this.renderer.setClearColor(0x000000, 0);
     this.onResize({
       width: this.sizes.width,
       height: this.sizes.height,

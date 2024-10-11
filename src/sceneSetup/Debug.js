@@ -51,6 +51,10 @@ export class Debug {
           this.createTransformControls(object, folder);
         }
 
+        if (object.isGroup) {
+          this.createTransformControls(object, folder);
+        }
+
         if (this.customConfigs.has(object)) {
           const customConfigFunction = this.customConfigs.get(object);
           customConfigFunction(folder);
@@ -129,6 +133,7 @@ export class Debug {
   }
 
   refresh() {
+    console.log('refresh')
     this.pane.refresh();
   }
 }

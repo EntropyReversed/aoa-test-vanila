@@ -1,7 +1,6 @@
 import { Group } from "three";
 import Manager from "./Manager";
 import { Billboard } from "./Billboard";
-import { FollowHTML } from "./FollowHTML";
 
 export default class ScreenSizer {
   objectsArr = [];
@@ -24,7 +23,7 @@ export default class ScreenSizer {
     this.objectsArr.forEach(({ group }) => this.scaleObject(group));
   }
 
-  addObject({ object, isBillboard = false, target = null, scaleAdjust = true, onUpdate }) {
+  addObject({ object, isBillboard = false, scaleAdjust = true, onUpdate }) {
     let obj = object;
 
     if (isBillboard) {
@@ -38,15 +37,11 @@ export default class ScreenSizer {
 
     this.scene.add(group);
 
-    const objData = { group, object, visible: true, target, observer: null, onUpdate, scaleAdjust };
+    const objData = { group, object, visible: true, observer: null, onUpdate, scaleAdjust };
     this.objectsArr.push(objData);
 
     if (this.objectsArr.length === 1) {
       this.updateSignal.subscribe(this.updateCallback, 0);
-    }
-
-    if (target) {
-      new FollowHTML(objData);
     }
 
     requestAnimationFrame(() => (group.visible = true));

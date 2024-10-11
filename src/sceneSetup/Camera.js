@@ -9,7 +9,7 @@ export default class Camera {
 
   createCamera() {
     this.camera = new PerspectiveCamera(
-      75,
+      50,
       this.sizes.aspect,
       0.1,
       20
