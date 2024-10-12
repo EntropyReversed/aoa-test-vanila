@@ -10,27 +10,27 @@ export default class TriakisAnimation {
 
   setUpEnvironment() {
     const lights = [
-      {
-        type: 'directional',
-        color: '#ffffff',
-        intensity: 3,
-        position: [4, 8, 10],
-        target: [0, 0, 0],
-      },
-      {
-        type: 'directional',
-        color: '#ffffff',
-        intensity: 3,
-        position: [-4, 8, 10],
-        target: [0, 0, 0],
-      },
-      {
-        type: 'directional',
-        color: '#ffffff',
-        intensity: 3,
-        position: [0, 0, -10],
-        target: [0, 0, 0],
-      },
+      // {
+      //   type: 'directional',
+      //   color: '#ffffff',
+      //   intensity: 2,
+      //   position: [5, 9, 10],
+      //   target: [0, 0, 0],
+      // },
+      // {
+      //   type: 'directional',
+      //   color: '#ffffff',
+      //   intensity: 2,
+      //   position: [-4, 8, 10],
+      //   target: [0, 0, 0],
+      // },
+      // {
+      //   type: 'directional',
+      //   color: '#ffffff',
+      //   intensity: 2,
+      //   position: [0, 0, -10],
+      //   target: [0, 0, 0],
+      // },
       // {
       //   type: 'spot',
       //   color: '#ffffff',

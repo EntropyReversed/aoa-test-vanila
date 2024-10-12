@@ -1,8 +1,9 @@
-import { Group, MeshStandardMaterial } from "three";
+import { Euler, Group, LinearFilter, LinearMipmapLinearFilter, MeshStandardMaterial, Vector3 } from "three";
 import Manager from "../sceneSetup/Manager";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ProjectsGallery } from "./ProjectsGallery";
+import { TriangleOutine } from "./TriangleOutline";
 
 export class Triakis {
   constructor() {
@@ -23,6 +24,13 @@ export class Triakis {
       debug.addSceneObject({ name: "Triakis", object: this.model });
       debug.addSceneObject({ name: "projectsGroup", object: this.projectsGroup });
       debug.addSceneObject({ name: "Camera", object: this.camera });
+
+      debug.addCustomConfig(this.camera, (folder) => {
+        folder.addBinding(this.camera, "fov",).on('change', () => {
+          this.camera.updateProjectionMatrix();
+        });
+      });
+
     }
 
     this.manager.signals.debug.subscribe(onDebug);
@@ -30,14 +38,72 @@ export class Triakis {
 
   init() {
     this.projectsGallery = new ProjectsGallery();
-    // this.colorMap.minFilter = LinearMipmapLinearFilter;
-    // this.colorMap.magFilter = LinearFilter;
+    this.colorMap.minFilter = LinearMipmapLinearFilter;
+    this.colorMap.magFilter = LinearFilter;
+
+    // const clouds = document.querySelectorAll('.cloud')
+    // const tl = gsap.timeline();
+
+    // clouds.forEach((cloud, index) => {
+    //   const cloudStart = {};
+    //   const cloudEnd = {
+    //     duration: 5,
+    //     ease: 'linear',
+    //     repeat: '-1',
+    //     yoyo: true,
+    //   };
+
+    //   // eslint-disable-next-line default-case
+    //   switch (index) {
+    //     case 0:
+    //       cloudStart.x = 0;
+    //       cloudEnd.x = 30;
+    //       break;
+    //     case 1:
+    //       cloudStart.x = 0;
+    //       cloudEnd.x = -30;
+    //       break;
+    //     case 2:
+    //       cloudStart.y = 0;
+    //       cloudStart.rotation = 0;
+    //       cloudEnd.y = 30;
+    //       cloudEnd.rotation = 2;
+    //       break;
+    //   }
+
+    //   tl.fromTo(cloud, cloudStart, cloudEnd, `<+={(index + 1) * 10}%`);
+    // });
+
+    this.trianglesGroup = new Group();
+
+    this.triangleOutlineMain = new TriangleOutine({
+      color: '#00B0BE',
+      position: new Vector3(-0.028, -0.05, 0),
+      scale: new Vector3(1.8, 1.8, 1.8),
+    });
+    this.triangleOutlineLeft = new TriangleOutine({
+      color: '#99DFE5',
+      position: new Vector3(-1, -0.05, 0),
+      rotation: new Euler(0, 0, Math.PI * 0.1),
+      scale: new Vector3(1.4, 1.4, 1.4),
+    });
+    this.triangleOutlineRight = new TriangleOutine({
+      color: '#FFCB2F',
+      position: new Vector3(1, -0.05, 0),
+      rotation: new Euler(0, 0, Math.PI * -0.1),
+      scale: new Vector3(1.4, 1.4, 1.4),
+    });
+
+    this.trianglesGroup.add(this.triangleOutlineMain.triangle);
+    this.trianglesGroup.add(this.triangleOutlineLeft.triangle);
+    this.trianglesGroup.add(this.triangleOutlineRight.triangle);
+    this.scene.add(this.trianglesGroup);
 
     this.model.material = new MeshStandardMaterial({
       color: 'white',
       map: this.colorMap,
       metalness: 0.9,
-      roughness: 0.2,
+      roughness: 0.35,
       opacity: 0,
       transparent: true,
     });
@@ -60,7 +126,7 @@ export class Triakis {
 
     this.projectsGroup = new Group();
     this.projectsGroup.name = "ProjectsGroup";
-    this.projectsGroup.position.set(0, 0.1, 1.5);
+    this.projectsGroup.position.set(0, 0.2, 1.5);
 
     // this.supportGroup.position.set(0, 0, 0);
     // this.supportGroup.scale.set(0, 0, 0);
@@ -111,12 +177,12 @@ export class Triakis {
         }
       }, '<')
       .to('.triakis-section__inner', {
-        opacity: 1, duration: 2, ease: "power2.out", onStart: () => {
+        y: 0, opacity: 1, duration: 1, ease: "power2.out", onStart: () => {
           gsap.to('.triakis-section__inner', {
             contentVisibility: 'visible',
           })
         }
-      }, '<+=2')
+      }, '<+=1.2')
 
     //supportGroup
     const timelineSupport = gsap.timeline()
@@ -130,7 +196,7 @@ export class Triakis {
         y: -0.1, duration: 1, ease: "none"
       }, '<')
       .to('.projects-slider', {
-        yPercent: -100, duration: 1, ease: "none"
+        '--progress': 1, duration: 1, ease: "none"
       }, '<')
 
 

@@ -73,7 +73,9 @@ export default class Environment {
       return;
     }
 
+    this.pmremGenerator.compileEquirectangularShader();
     this.skybox = this.pmremGenerator.fromEquirectangular(texture).texture;
+    this.skybox.rotation = Math.PI;
 
     if (skyboxConfig.background) {
       this.scene.background = this.skybox;
@@ -81,6 +83,9 @@ export default class Environment {
     if (skyboxConfig.environment) {
       this.scene.environment = this.skybox;
     }
+
+    texture.dispose();
+    this.pmremGenerator.dispose();
   }
 
   setPosition(object, position) {

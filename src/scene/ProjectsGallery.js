@@ -37,7 +37,6 @@ export class ProjectsGallery {
     if (this.isTransitioning) return;
     this.isTransitioning = true;
 
-    // Load the next image if it hasn't been loaded yet
     if (this.loadIndex < this.total && !this.imagesLoaded[this.loadIndex]) {
       this.imagesLoaded[this.loadIndex] = true;
       this.images[this.loadIndex].classList.add('load');

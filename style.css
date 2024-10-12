@@ -45,7 +45,7 @@ body {
 }
 
 .triakis-section {
-  box-shadow: 0 0 0 1px red;
+  /* box-shadow: 0 0 0 1px red; */
   width: 100%;
   height: 130vh;
 }
@@ -62,13 +62,14 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 100px;
+  font-size: 70px;
   content-visibility: hidden;
   will-change: opacity;
   opacity: 0.001;
+  transform: translateY(40px);
 }
 
-/* body::before {
+body::before {
   position: fixed;
   content: '';
   top: 0;
@@ -91,7 +92,7 @@ body::after {
   transform: translateY(-50%);
   background-color: black;
   z-index: 10;
-} */
+}
 
 img[data-src] {
   visibility: hidden;
@@ -195,9 +196,10 @@ img[data-src] {
 .clouds {
   position: absolute;
   inset: 0;
-  display: grid;
+  /* display: grid; */
   z-index: 0;
-  opacity: 0.8;
+  /* opacity: 0.8; */
+  pointer-events: none;
 }
 
 .clouds--front {
@@ -205,8 +207,9 @@ img[data-src] {
 }
 
 .clouds .cloud {
-  grid-column-start: 1;
-  grid-row-start: 1;
+  position: absolute;
+  /* grid-column-start: 1;
+  grid-row-start: 1; */
 }
 
 .clouds .cloud img {
@@ -216,23 +219,45 @@ img[data-src] {
 }
 
 .cloud-one {
-  transform: translateX(-10%);
+  width: max(70%, 700px);
+  left: 50%;
+  transform: translateX(-50%);
 }
+
 .cloud-two {
-  transform: translateY(-10%);
+  left: -20%;
+  bottom: 0;
+  width: 50%;
+  z-index: 7;
+}
+.cloud-three {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  object-fit: cover;
+  z-index: 4;
+  mix-blend-mode: hard-light;
 }
 
 .projects-slider {
+  --progress: 0;
   position: sticky;
   top: 0;
   width: 100%;
   height: 100vh;
-  display: grid;
   z-index: 0;
   margin-bottom: -100vh;
   opacity: 0;
+}
+
+.projects-slider__inner {
+  display: grid;
+  width: 100%;
+  height: 100%;
   mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+  transform: translateY(calc(var(--progress) * -100vh));
+  opacity: calc(1 - var(--progress));
 }
 
 .projects-slider__project {
