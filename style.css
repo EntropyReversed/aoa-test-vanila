@@ -32,6 +32,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: linear-gradient(to bottom, #b7eaff 0%, #94dfff 100%);
 }
 
 .triakis-sections {
@@ -47,6 +48,10 @@ body {
   box-shadow: 0 0 0 1px red;
   width: 100%;
   height: 130vh;
+}
+
+.triakis-section#home {
+  height: 100vh;
 }
 
 .triakis-section__inner {
@@ -87,6 +92,11 @@ body::after {
   background-color: black;
   z-index: 10;
 } */
+
+img[data-src] {
+  visibility: hidden;
+  opacity: 0;
+}
 
 .loading-screen {
   --progress: 0;
@@ -170,10 +180,6 @@ body::after {
   z-index: 100;
 }
 
-#scene {
-  background: linear-gradient(to bottom, #b7eaff 0%, #94dfff 100%);
-}
-
 #scene::before {
   position: absolute;
   content: '';
@@ -182,8 +188,7 @@ body::after {
   background-size: cover;
   background-repeat: no-repeat;
   background-image: url('/assets/textures/tealLayer.webp');
-  mix-blend-mode: lighten;
-  opacity: 0.4;
+  opacity: 0.2;
   pointer-events: none;
 }
 
@@ -215,4 +220,32 @@ body::after {
 }
 .cloud-two {
   transform: translateY(-10%);
+}
+
+.projects-slider {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  display: grid;
+  z-index: 0;
+  margin-bottom: -100vh;
+  opacity: 0;
+  mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+}
+
+.projects-slider__project {
+  grid-column-start: 1;
+  grid-row-start: 1;
+  width: 100%;
+  height: 100vh;
+  opacity: 0;
+  /* transition: 2s ease-in-out; */
+}
+
+.projects-slider__project img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

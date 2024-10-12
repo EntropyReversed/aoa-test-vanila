@@ -2,6 +2,7 @@ import { Group, MeshStandardMaterial } from "three";
 import Manager from "../sceneSetup/Manager";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ProjectsGallery } from "./ProjectsGallery";
 
 export class Triakis {
   constructor() {
@@ -28,6 +29,7 @@ export class Triakis {
   }
 
   init() {
+    this.projectsGallery = new ProjectsGallery();
     // this.colorMap.minFilter = LinearMipmapLinearFilter;
     // this.colorMap.magFilter = LinearFilter;
 
@@ -99,7 +101,15 @@ export class Triakis {
       // }, '-=0.5')
       .to(this.loaderGroup.scale, { x: 1, y: 1, z: 1, duration: 1.5, delay: 0.5, ease: "power2.out" }, '<')
       .to(this.model.material, { opacity: 1, duration: 1, ease: "power2.out" }, '<')
-      .to(this.loaderGroup.rotation, { z: 0, duration: 2, ease: "power2.out" }, '<')
+      .to(this.loaderGroup.rotation, {
+        z: 0, duration: 2, ease: "power2.out"
+      }, '<')
+      .to('.projects-slider', {
+        opacity: 1, duration: 6, ease: "power2.out",
+        onStart: () => {
+          this.projectsGallery.initGallery();
+        }
+      }, '<')
       .to('.triakis-section__inner', {
         opacity: 1, duration: 2, ease: "power2.out", onStart: () => {
           gsap.to('.triakis-section__inner', {
@@ -118,6 +128,9 @@ export class Triakis {
       }, '<')
       .to(this.supportGroup.position, {
         y: -0.1, duration: 1, ease: "none"
+      }, '<')
+      .to('.projects-slider', {
+        yPercent: -100, duration: 1, ease: "none"
       }, '<')
 
 
