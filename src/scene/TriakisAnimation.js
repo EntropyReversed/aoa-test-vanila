@@ -17,13 +17,13 @@ export default class TriakisAnimation {
       //   position: [5, 9, 10],
       //   target: [0, 0, 0],
       // },
-      // {
-      //   type: 'directional',
-      //   color: '#ffffff',
-      //   intensity: 2,
-      //   position: [-4, 8, 10],
-      //   target: [0, 0, 0],
-      // },
+      {
+        type: 'directional',
+        color: '#ffffff',
+        intensity: 0.1,
+        position: [-4, 0, 10],
+        target: [0, 0, 0],
+      },
       // {
       //   type: 'directional',
       //   color: '#ffffff',

@@ -1,9 +1,10 @@
-import { Euler, Group, LinearFilter, LinearMipmapLinearFilter, MeshStandardMaterial, Vector3 } from "three";
+import { Group, MeshStandardMaterial } from "three";
 import Manager from "../sceneSetup/Manager";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ProjectsGallery } from "./ProjectsGallery";
-import { TriangleOutine } from "./TriangleOutline";
+import { BackgroundTriangles } from "./BackgroundTriangles";
+import { SectionImages } from "./SectionImages";
 
 export class Triakis {
   constructor() {
@@ -22,6 +23,8 @@ export class Triakis {
       this.refreshDebug = debug.refresh;
 
       debug.addSceneObject({ name: "Triakis", object: this.model });
+      debug.addSceneObject({ name: "processGroup", object: this.processGroup });
+      debug.addSceneObject({ name: "peopleGroup", object: this.peopleGroup });
       debug.addSceneObject({ name: "projectsGroup", object: this.projectsGroup });
       debug.addSceneObject({ name: "Camera", object: this.camera });
 
@@ -38,8 +41,9 @@ export class Triakis {
 
   init() {
     this.projectsGallery = new ProjectsGallery();
-    this.colorMap.minFilter = LinearMipmapLinearFilter;
-    this.colorMap.magFilter = LinearFilter;
+    this.sectionImages = new SectionImages();
+    this.sectionImagesWrap = this.sectionImages.wrap;
+    this.sectionImagesImages = this.sectionImages.images;
 
     // const clouds = document.querySelectorAll('.cloud')
     // const tl = gsap.timeline();
@@ -74,30 +78,12 @@ export class Triakis {
     //   tl.fromTo(cloud, cloudStart, cloudEnd, `<+={(index + 1) * 10}%`);
     // });
 
-    this.trianglesGroup = new Group();
+    this.backgroundTriangles = new BackgroundTriangles();
+    this.trianglesGroup = this.backgroundTriangles.trianglesGroup;
+    this.triangleOutlineMain = this.backgroundTriangles.triangleOutlineMain;
+    this.triangleOutlineLeft = this.backgroundTriangles.triangleOutlineLeft;
+    this.triangleOutlineRight = this.backgroundTriangles.triangleOutlineRight;
 
-    this.triangleOutlineMain = new TriangleOutine({
-      color: '#00B0BE',
-      position: new Vector3(-0.028, -0.05, 0),
-      scale: new Vector3(1.8, 1.8, 1.8),
-    });
-    this.triangleOutlineLeft = new TriangleOutine({
-      color: '#99DFE5',
-      position: new Vector3(-1, -0.05, 0),
-      rotation: new Euler(0, 0, Math.PI * 0.1),
-      scale: new Vector3(1.4, 1.4, 1.4),
-    });
-    this.triangleOutlineRight = new TriangleOutine({
-      color: '#FFCB2F',
-      position: new Vector3(1, -0.05, 0),
-      rotation: new Euler(0, 0, Math.PI * -0.1),
-      scale: new Vector3(1.4, 1.4, 1.4),
-    });
-
-    this.trianglesGroup.add(this.triangleOutlineMain.triangle);
-    this.trianglesGroup.add(this.triangleOutlineLeft.triangle);
-    this.trianglesGroup.add(this.triangleOutlineRight.triangle);
-    this.scene.add(this.trianglesGroup);
 
     this.model.material = new MeshStandardMaterial({
       color: 'white',
@@ -111,7 +97,7 @@ export class Triakis {
     this.loaderGroup = new Group();
     this.loaderGroup.name = "LoaderGroup";
     this.loaderGroup.scale.set(0, 0, 0);
-    this.loaderGroup.position.x = -0.015;
+    this.loaderGroup.position.x = -0.013;
     this.loaderGroup.rotation.set(
       Math.PI * -0.1,
       Math.PI,
@@ -126,7 +112,10 @@ export class Triakis {
 
     this.projectsGroup = new Group();
     this.projectsGroup.name = "ProjectsGroup";
-    this.projectsGroup.position.set(0, 0.2, 1.5);
+
+    this.processGroup = new Group();
+    this.processGroup.name = "ProcessGroup";
+    // this.projectsGroup.position.set(0, 0, 0);
 
     // this.supportGroup.position.set(0, 0, 0);
     // this.supportGroup.scale.set(0, 0, 0);
@@ -136,7 +125,8 @@ export class Triakis {
     this.supportGroup.add(this.loaderGroup)
     this.peopleGroup.add(this.supportGroup)
     this.projectsGroup.add(this.peopleGroup)
-    this.scene.add(this.projectsGroup);
+    this.processGroup.add(this.projectsGroup)
+    this.scene.add(this.processGroup);
     // this.model.rotation.set(-0.27, -1.02, 0);
 
     gsap.timeline()
@@ -168,14 +158,26 @@ export class Triakis {
       .to(this.loaderGroup.scale, { x: 1, y: 1, z: 1, duration: 1.5, delay: 0.5, ease: "power2.out" }, '<')
       .to(this.model.material, { opacity: 1, duration: 1, ease: "power2.out" }, '<')
       .to(this.loaderGroup.rotation, {
-        z: 0, duration: 2, ease: "power2.out"
+        z: 0, x: Math.PI * -0.2, duration: 2, ease: "power2.out"
       }, '<')
       .to('.projects-slider', {
-        opacity: 1, duration: 6, ease: "power2.out",
+        opacity: 0.9, duration: 6, ease: "power2.out",
         onStart: () => {
           this.projectsGallery.initGallery();
+          this.sectionImages.init();
         }
       }, '<')
+
+      .to([
+        this.triangleOutlineMain.uRevealOpacity,
+        this.triangleOutlineLeft.uRevealOpacity,
+        this.triangleOutlineRight.uRevealOpacity,
+      ], {
+        value: 1, duration: 2
+      }, '<')
+      .to(this.sectionImagesWrap, {
+        opacity: 0.9, duration: 3, ease: "power2.out",
+      }, '<+=1')
       .to('.triakis-section__inner', {
         y: 0, opacity: 1, duration: 1, ease: "power2.out", onStart: () => {
           gsap.to('.triakis-section__inner', {
@@ -185,63 +187,68 @@ export class Triakis {
       }, '<+=1.2')
 
     //supportGroup
-    const timelineSupport = gsap.timeline()
+    const timelineSupport = gsap.timeline({ ease: "none" })
       .to(this.supportGroup.rotation, {
-        x: -1.98, y: 0.56, z: 1.3, duration: 1, ease: "none"
+        x: -1.8, y: 0.66, z: 1.1, duration: 1,
       })
       .to(this.supportGroup.scale, {
-        x: 0.9, y: 0.9, z: 0.9, duration: 1, ease: "none"
+        x: 0.9, y: 0.9, z: 0.9, duration: 1,
       }, '<')
-      .to(this.supportGroup.position, {
-        y: -0.1, duration: 1, ease: "none"
+      .to([
+        this.triangleOutlineMain.uOpacity,
+        this.triangleOutlineLeft.uOpacity,
+        this.triangleOutlineRight.uOpacity,
+      ], {
+        value: 0, duration: 1
+      }, '<')
+      .to(this.trianglesGroup.position, {
+        y: 3, duration: 1,
+      }, '<')
+      .to(this.camera.position, {
+        y: 0.2, duration: 1,
       }, '<')
       .to('.projects-slider', {
-        '--progress': 1, duration: 1, ease: "none"
+        '--progress': 1, duration: 1,
       }, '<')
 
 
     // peopleGroup
-    const timelinePeople = gsap.timeline()
-      .to(this.camera.position, {
-        x: 1, y: 0.15, duration: 1, ease: "none"
-      })
-      .to(this.peopleGroup.rotation, {
-        y: 0.4, z: 3, duration: 1, ease: "none",
-      }, '<')
-      .to(this.peopleGroup.scale, {
-        x: 0.8, y: 0.8, z: 0.8, duration: 1, ease: "none",
-      }, '<')
+    const defaultEase = "none";
+    const defaultDuration = 1;
+    const imageFadeDuration = 0.5;
 
-    const timelineProjects = gsap.timeline()
-      .to(this.projectsGroup.position, {
-        x: -0.1, duration: 1, ease: "none",
-      })
-      .to(this.projectsGroup.rotation, {
-        x: -0.41, y: 0.41, z: 4.64, duration: 1, ease: "none",
-      }, '<')
+    // Timeline for "People" section
+    const timelinePeople = gsap.timeline({ ease: defaultEase })
+      .fromTo(this.camera.position, { x: 0, y: 0.2 }, { x: 1.2, y: 0.35, duration: defaultDuration })
+      .to(this.peopleGroup.rotation, { x: -0.1, y: 0.4, z: 4, duration: defaultDuration }, '<')
+      .to(this.peopleGroup.scale, { x: 0.85, y: 0.85, z: 0.85, duration: defaultDuration }, '<')
+      .to(this.sectionImagesImages[0], { opacity: 1, duration: imageFadeDuration }, '<');
 
+    // Timeline for "Projects" section
+    const timelineProjects = gsap.timeline({ ease: defaultEase })
+      .to(this.projectsGroup.rotation, { x: 0.14, y: 0.82, z: 1.91, duration: defaultDuration })
+      .to(this.sectionImagesImages[1], { opacity: 1, duration: imageFadeDuration }, '<');
 
-    ScrollTrigger.create({
-      trigger: '#home',
-      start: "top top",
-      endTrigger: '#support',
-      end: "top top",
-      animation: timelineSupport,
-      scrub: 1,
-    });
-    ScrollTrigger.create({
-      trigger: '#support',
-      start: "top+=30% top",
-      end: "bottom top",
-      animation: timelinePeople,
-      scrub: 1,
-    });
-    ScrollTrigger.create({
-      trigger: '#people',
-      start: "top+=30% top",
-      end: "bottom top",
-      animation: timelineProjects,
-      scrub: 1,
+    // Timeline for "Process" section
+    const timelineProcess = gsap.timeline({ ease: defaultEase })
+      .to(this.processGroup.rotation, { x: 0.41, y: 1.09, z: 1.64, duration: defaultDuration })
+      .to(this.sectionImagesImages[2], { opacity: 1, duration: imageFadeDuration }, '<');
+
+    const triggers = [
+      { trigger: '#home', animation: timelineSupport },
+      { trigger: '#support', animation: timelinePeople },
+      { trigger: '#people', animation: timelineProjects },
+      { trigger: '#projects', animation: timelineProcess },
+    ];
+
+    triggers.forEach(({ trigger, animation }, index) => {
+      ScrollTrigger.create({
+        trigger,
+        start: index === 0 ? "top top" : "top+=30% top",
+        end: "bottom top",
+        animation,
+        scrub: 1,
+      });
     });
     this.debug();
   }

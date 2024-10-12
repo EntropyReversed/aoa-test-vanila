@@ -4,7 +4,7 @@ export class ProjectsGallery {
   current = 0;
   autoPlayDelay = 5000;
   isTransitioning = false;
-  loadIndex = 2; // Start loading from index 2
+  loadIndex = 2;
 
   constructor() {
     this.wrap = document.querySelector('.projects-slider');
@@ -17,7 +17,6 @@ export class ProjectsGallery {
       slide.style.opacity = index === 0 ? 1 : 0;
     });
 
-    // Load the first two images
     this.imagesLoaded[0] = true;
     this.imagesLoaded[1] = true;
     this.images[0].classList.add('load');

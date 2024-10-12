@@ -9,12 +9,14 @@ export default class Camera {
 
   createCamera() {
     this.camera = new PerspectiveCamera(
-      50,
+      70,
       this.sizes.aspect,
       0.1,
       20
     );
-    this.camera.position.z = 4;
+
+    this.camera.position.y = 0.3;
+    this.camera.position.z = 1.8;
     this.scene.add(this.camera);
   }
 
