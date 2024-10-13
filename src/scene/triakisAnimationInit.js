@@ -7,19 +7,17 @@ import TriakisAnimation from "./TriakisAnimation";
 import assets from "./assets";
 import { loadingStates } from "../sceneSetup/constants";
 
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-ScrollTrigger.normalizeScroll({
-  allowNestedScroll: true,
-});
-
 export const triakisAnimationInit = () => {
   const wrap = document.getElementById("scene");
   if (wrap) {
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+    ScrollTrigger.normalizeScroll({
+      allowNestedScroll: true,
+    });
+
     const { signals } = new Manager({
       wrap,
       assets,
-      //TODO: make it so that renderOnDemand works with controls and debug
-      // postProcessing won't be able to work with renderOnDemand
       renderOnDemand: true,
       debug: window.location.href.includes("debug"),
     });

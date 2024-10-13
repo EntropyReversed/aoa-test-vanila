@@ -19,14 +19,14 @@ export class Triakis {
 
   debug() {
     const onDebug = (debug) => {
-      // debug.addSceneObject({ name: "peopleGroup", object: this.peopleGroup });
+      // debug.addSceneObject({ name: "triakis", object: this.model });
       // debug.addSceneObject({ name: "highlightOneGroup", object: this.highlightOne.group });
       // debug.addSceneObject({ name: "highlightTwoGroup", object: this.highlightTwo.group });
       // debug.addSceneObject({ name: "highlightThreeGroup", object: this.highlightThree.group });
       // debug.addSceneObject({ name: "triangleMain", object: this.triangleOutlineMain.triangle });
       // debug.addSceneObject({ name: "triangleLeft", object: this.triangleOutlineLeft.triangle });
       // debug.addSceneObject({ name: "triangleRight", object: this.triangleOutlineRight.triangle });
-      // debug.addSceneObject({ name: "camera", object: this.camera });
+      debug.addSceneObject({ name: "camera", object: this.camera });
 
       // debug.addCustomConfig(this.camera, (folder) => {
       //   const lookAtParams = {

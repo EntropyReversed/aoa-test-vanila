@@ -1,9 +1,15 @@
 import { Pane } from "tweakpane";
+import Manager from "./Manager";
 
 export class Debug {
   pane = new Pane();
   sceneObjects = new Set();
   customConfigs = new Map();
+
+  constructor() {
+    this.manager = Manager.instance;
+    this.renderOnDemand = this.manager.renderOnDemand;
+  }
 
   addSceneObject(sceneObject) {
     this.sceneObjects.add(sceneObject);
@@ -84,48 +90,63 @@ export class Debug {
     this.createColorControl(material, materialFolder);
 
     if (Boolean(material.metalness)) {
-      materialFolder.addBinding(material, 'metalness', { label: 'Metallic', min: 0, max: 1 });
+      materialFolder.addBinding(material, 'metalness', { label: 'Metallic', min: 0, max: 1 })
+        .on('change', () => this.requestRenderIfNeeded());
     }
 
     if (Boolean(material.roughness)) {
-      materialFolder.addBinding(material, 'roughness', { label: 'Roughness', min: 0, max: 1 });
+      materialFolder.addBinding(material, 'roughness', { label: 'Roughness', min: 0, max: 1 })
+        .on('change', () => this.requestRenderIfNeeded());
     }
 
     if (material.transparent) {
-      materialFolder.addBinding(material, 'opacity', { label: 'Opacity', min: 0, max: 1 });
+      materialFolder.addBinding(material, 'opacity', { label: 'Opacity', min: 0, max: 1 })
+        .on('change', () => this.requestRenderIfNeeded());
     }
   }
 
   createGeometryScaleControls(mesh, folder) {
-    folder.addBinding(mesh.scale, 'x', { label: 'x', min: 0.1, max: 4 });
-    folder.addBinding(mesh.scale, 'y', { label: 'y', min: 0.1, max: 4 });
-    folder.addBinding(mesh.scale, 'z', { label: 'z', min: 0.1, max: 4 });
+    folder.addBinding(mesh.scale, 'x', { label: 'x', min: 0.1, max: 4 })
+      .on('change', () => this.requestRenderIfNeeded());
+    folder.addBinding(mesh.scale, 'y', { label: 'y', min: 0.1, max: 4 })
+      .on('change', () => this.requestRenderIfNeeded());
+    folder.addBinding(mesh.scale, 'z', { label: 'z', min: 0.1, max: 4 })
+      .on('change', () => this.requestRenderIfNeeded());
   }
 
   createGeometryPositionControls(mesh, folder) {
-    folder.addBinding(mesh.position, 'x', { label: 'x', min: -3, max: 3 });
-    folder.addBinding(mesh.position, 'y', { label: 'y', min: -3, max: 3 });
-    folder.addBinding(mesh.position, 'z', { label: 'z', min: -3, max: 3 });
+    folder.addBinding(mesh.position, 'x', { label: 'x', min: -3, max: 3 })
+      .on('change', () => this.requestRenderIfNeeded());
+    folder.addBinding(mesh.position, 'y', { label: 'y', min: -3, max: 3 })
+      .on('change', () => this.requestRenderIfNeeded());
+    folder.addBinding(mesh.position, 'z', { label: 'z', min: -3, max: 3 })
+      .on('change', () => this.requestRenderIfNeeded());
   }
 
   createGeometryRotationControls(mesh, folder) {
-    folder.addBinding(mesh.rotation, 'x', { label: 'x', min: -Math.PI * 2, max: Math.PI * 2 });
-    folder.addBinding(mesh.rotation, 'y', { label: 'y', min: -Math.PI * 2, max: Math.PI * 2 });
-    folder.addBinding(mesh.rotation, 'z', { label: 'z', min: -Math.PI * 2, max: Math.PI * 2 });
-  }
-
-  createLightControls(light, folder) {
-    folder.addBinding(light, 'intensity', { label: 'Intensity', min: 0, max: 20 });
-    this.createColorControl(light, folder);
+    folder.addBinding(mesh.rotation, 'x', { label: 'x', min: -Math.PI * 2, max: Math.PI * 2 })
+      .on('change', () => this.requestRenderIfNeeded());
+    folder.addBinding(mesh.rotation, 'y', { label: 'y', min: -Math.PI * 2, max: Math.PI * 2 })
+      .on('change', () => this.requestRenderIfNeeded());
+    folder.addBinding(mesh.rotation, 'z', { label: 'z', min: -Math.PI * 2, max: Math.PI * 2 })
+      .on('change', () => this.requestRenderIfNeeded());
   }
 
   createColorControl(obj, folder) {
     const baseColor255 = obj.color.clone().multiplyScalar(255);
     const params = { color: { r: baseColor255.r, g: baseColor255.g, b: baseColor255.b } };
 
-    folder.addBinding(params, 'color', { label: 'Color' }).on('change', e => {
-      obj.color.setRGB(e.value.r / 255, e.value.g / 255, e.value.b / 255);
-    });
+    folder.addBinding(params, 'color', { label: 'Color' })
+      .on('change', e => {
+        obj.color.setRGB(e.value.r / 255, e.value.g / 255, e.value.b / 255);
+        this.requestRenderIfNeeded();
+      });
+  }
+
+  requestRenderIfNeeded() {
+    if (this.renderOnDemand) {
+      this.manager.requestRender();
+    }
   }
 
   refresh() {
