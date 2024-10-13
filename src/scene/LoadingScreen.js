@@ -31,19 +31,14 @@ export class LoadingScreen {
       gsap.to(
         this.loaderWrap,
         {
-          opacity: 0,
-          // delay: 2,
+          autoAlpha: 0,
           duration: 1.5,
           onStart: () => {
             this.onComplete?.();
-            document.body.style.overflow = "auto";
             this.loaderWrap.style.pointerEvents = "none";
-            if (this.manager.renderOnDemand) {
-              this.manager.requestRender();
-            }
           },
           onComplete: () => {
-            this.loaderWrap.remove()
+            this.loaderWrap.style.pointerEvents = "none";
           },
         }
       );
