@@ -23,6 +23,8 @@ export class TriakisHighlight {
       uOpacity: this._uOpacity,
       uRevealOpacity: this._uRevealOpacity,
     };
+    this.textureBase.dispose();
+    this.textureBaseFull.dispose();
     this.createHighlight();
   }
 
