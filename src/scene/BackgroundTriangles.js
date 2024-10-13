@@ -19,15 +19,15 @@ export class BackgroundTriangles {
     });
     this.triangleOutlineLeft = new TriangleOutline({
       color: '#99DFE5',
-      position: new Vector3(-1, -0.05, -1),
+      position: new Vector3(-2.15, -0.13, -1),
       rotation: new Euler(0, 0, Math.PI * 0.1),
-      scale: new Vector3(1.4, 1.4, 1.4),
+      scale: new Vector3(1.6, 1.6, 1.6),
     });
     this.triangleOutlineRight = new TriangleOutline({
       color: '#FFCB2F',
-      position: new Vector3(1, -0.05, -1),
-      rotation: new Euler(0, 0, Math.PI * -0.1),
-      scale: new Vector3(1.4, 1.4, 1.4),
+      position: new Vector3(1.89, 1.17, -1),
+      rotation: new Euler(0, 0, Math.PI * -0.25),
+      scale: new Vector3(1.7, 1.7, 1.7),
     });
     this.trianglesGroup.add(this.triangleOutlineMain.triangle);
     this.trianglesGroup.add(this.triangleOutlineLeft.triangle);

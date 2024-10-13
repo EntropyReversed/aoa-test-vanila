@@ -191,48 +191,104 @@ img[data-src] {
 
 .clouds {
   position: absolute;
-  inset: 0;
-  /* display: grid; */
+  top: 70vh;
+  left: 0;
+  width: 100%;
+  height: 100%;
   z-index: 1;
-  /* opacity: 0.8; */
   pointer-events: none;
+}
+
+.clouds-inner {
+  position: absolute;
+  inset: 0;
 }
 
 .clouds--front {
   z-index: 3;
+  opacity: 0.7;
+}
+.clouds--back {
+  opacity: 0.7;
 }
 
 .clouds .cloud {
   position: absolute;
-  /* grid-column-start: 1;
-  grid-row-start: 1; */
+  transform-origin: center;
 }
 
 .clouds .cloud img {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  animation: cloudsMove 10s ease-in-out infinite;
 }
 
-.cloud-one {
-  width: max(70%, 700px);
+@keyframes cloudsMove {
+  50% {
+    transform: scale(0.93);
+  }
+}
+
+.clouds--back .cloud-one {
+  width: max(100%, 800px);
+  height: auto;
   left: 50%;
+  opacity: 0.8;
+  transform: translateX(-50%);
+}
+.clouds--back .cloud-two {
+  width: max(60%, 500px);
+  height: auto;
+  left: 20%;
+  top: 10%;
+  opacity: 0.8;
+  z-index: 6;
+  transform: translateX(-50%);
+}
+.clouds--back .cloud-three {
+  left: auto;
+  right: -50%;
+  top: 5%;
+  width: max(70%, 600px);
+  opacity: 0.8;
+  z-index: 4;
+  transform: translateX(-50%) rotate(20deg);
+}
+
+.clouds--back .cloud-four {
+  left: 50%;
+  bottom: -50%;
+  width: max(120%, 1000px);
+  z-index: -1;
   transform: translateX(-50%);
 }
 
-.cloud-two {
-  left: -20%;
-  bottom: 0;
-  width: 50%;
-  z-index: 7;
-}
-.cloud-three {
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  object-fit: cover;
+.clouds--front .cloud-one {
+  left: auto;
+  right: -20%;
+  bottom: -90%;
+  width: max(90%, 700px);
   z-index: 4;
-  mix-blend-mode: hard-light;
+  opacity: 0.6;
+  transform: translateX(-50%);
+}
+.clouds--front .cloud-two {
+  left: auto;
+  right: -70%;
+  bottom: -100%;
+  width: max(90%, 700px);
+  opacity: 0.6;
+  z-index: 4;
+  transform: translateX(-50%) rotate(-20deg);
+}
+.clouds--front .cloud-three {
+  left: 50%;
+  bottom: -25%;
+  width: max(90%, 700px);
+  z-index: 4;
+  opacity: 0.4;
+  transform: translateX(-50%);
 }
 
 .projects-slider {

@@ -1,6 +1,6 @@
 import gsap from "gsap";
-import Manager from "./Manager";
-import { loadingStates } from "./constants";
+import Manager from "../sceneSetup/Manager";
+import { loadingStates } from "../sceneSetup/constants";
 
 export class LoadingScreen {
   constructor({ wrapSelector, textCounterSelector, onComplete }) {
@@ -20,7 +20,7 @@ export class LoadingScreen {
         roundProps: "innerHTML",
         snap: { innerHTML: 1 },
         onStart: () => {
-          window.scrollTo(0, 0);
+          gsap.set(window, { scrollTo: 0 });
         }
       })
       .to(this.loaderWrap, {
@@ -33,7 +33,7 @@ export class LoadingScreen {
         {
           opacity: 0,
           // delay: 2,
-          duration: 2,
+          duration: 1.5,
           onStart: () => {
             this.onComplete?.();
             document.body.style.overflow = "auto";

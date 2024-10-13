@@ -6,9 +6,7 @@ import ScreenSizer from "./ScreenSizer.js";
 import { Signal } from "./Signal.js";
 import Sizes from "./Sizes.js";
 import Resources from "./Resources.js";
-import Controls from "./Controls.js";
 import { RaycasterClass } from "./Raycaster.js";
-import { PostProcessing } from "./PostProcessing.js";
 
 export default class Manager {
   static instance;
@@ -64,7 +62,6 @@ export default class Manager {
     this.enviroment = new Enviroment();
     this.screenSizer = new ScreenSizer();
     this.raycasterClass = new RaycasterClass();
-    this.postProcessing = new PostProcessing();
   }
 
   requestRender() {
@@ -84,7 +81,6 @@ export default class Manager {
 
   async setUpDebug() {
     if (!this.hasDebug) return;
-    this.controls = new Controls();
 
     const { default: Stats } = await import('stats.js');
     this.stats = new Stats();

@@ -1,6 +1,9 @@
-import { MeshStandardMaterial } from "three";
+import gsap from "gsap";
 import Manager from "../sceneSetup/Manager";
+import { ProjectsGallery } from "./ProjectsGallery";
+import { SectionImages } from "./SectionImages";
 import { Triakis } from "./Triakis";
+import { LoadingScreen } from "./LoadingScreen";
 
 export default class TriakisAnimation {
   constructor() {
@@ -24,20 +27,6 @@ export default class TriakisAnimation {
         position: [-4, 0, 10],
         target: [0, 0, 0],
       },
-      // {
-      //   type: 'directional',
-      //   color: '#ffffff',
-      //   intensity: 2,
-      //   position: [0, 0, -10],
-      //   target: [0, 0, 0],
-      // },
-      // {
-      //   type: 'spot',
-      //   color: '#ffffff',
-      //   intensity: 10.5,
-      //   position: [-3, 3, 8],
-      //   name: 'Spotlight'
-      // },
       {
         type: 'ambient',
         color: '#ffffff',
@@ -57,7 +46,9 @@ export default class TriakisAnimation {
 
   initScene() {
     this.setUpEnvironment();
-    this.triakis = new Triakis();
+    this.projectsGallery = new ProjectsGallery();
+    this.sectionImages = new SectionImages();
+    this.triakis = new Triakis(this);
   }
 
   init() {
@@ -66,6 +57,26 @@ export default class TriakisAnimation {
     } = this.manager;
 
     this.enviroment = enviroment;
+
+    new LoadingScreen({
+      wrapSelector: ".loading-screen",
+      textCounterSelector: ".loading-screen__text",
+      onComplete: () => {
+        const clouds = document.querySelectorAll('.cloud img');
+        clouds.forEach(cloud => {
+          cloud.classList.add('load');
+          gsap.fromTo(cloud, {
+            scale: 0.8,
+            opacity: 0,
+          }, {
+            delay: 0.5,
+            opacity: 1,
+            scale: 1,
+            duration: 2,
+          });
+        });
+      },
+    });
 
     this.initScene();
   }

@@ -15,8 +15,11 @@ export default class Camera {
       20
     );
 
-    this.camera.position.y = 0.3;
+    // this.camera.position.y = -0.1;
+    this.camera.position.y = 0.2;
     this.camera.position.z = 1.8;
+    this.camera.lookAt(0, -0.1, 0);
+
     this.scene.add(this.camera);
   }
 

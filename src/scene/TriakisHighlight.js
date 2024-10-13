@@ -1,11 +1,14 @@
-import { Mesh, MeshBasicMaterial, PlaneGeometry, ShaderMaterial, Uniform, Vector3 } from "three";
+import { Mesh, ShaderMaterial, Uniform } from "three";
 import Manager from "../sceneSetup/Manager";
 import { Billboard } from "../sceneSetup/Billboard";
+import gsap from "gsap";
+import { CircleGeometry } from "three";
 
 export class TriakisHighlight {
-  constructor(parentGroup) {
+  constructor(parentGroup, sectionID) {
     this.manager = Manager.instance;
     this.scene = this.manager.scene;
+    this.sectionID = sectionID;
     this.parentGroup = parentGroup;
     this.raycaster = this.manager.raycasterClass;
     this.resources = this.manager.resources;
@@ -83,7 +86,7 @@ export class TriakisHighlight {
     });
 
     this.mesh = new Mesh(
-      new PlaneGeometry(1, 1),
+      new CircleGeometry(0.5, 16),
       material
     );
 
@@ -94,14 +97,15 @@ export class TriakisHighlight {
     this.raycaster.addEventListeners(
       {
         objects: [this.mesh],
-        onMouseEnter: (hitInfo) => {
+        onMouseEnter: () => {
           document.body.style.cursor = 'pointer';
         },
-        onMouseLeave: (hitInfo) => {
+        onMouseLeave: () => {
           document.body.style.cursor = 'auto';
         },
-        // onClick: (hitInfo) => {
-        // }
+        onClick: () => {
+          gsap.to(window, { scrollTo: this.sectionID, duration: 1, onUpdate: () => this.manager.requestRender() });
+        }
       }
     );
   }

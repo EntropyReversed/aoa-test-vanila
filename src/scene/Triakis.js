@@ -1,30 +1,64 @@
 import { Group, MeshStandardMaterial } from "three";
 import Manager from "../sceneSetup/Manager";
-import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ProjectsGallery } from "./ProjectsGallery";
 import { BackgroundTriangles } from "./BackgroundTriangles";
-import { SectionImages } from "./SectionImages";
 import { TriakisHighlight } from "./TriakisHighlight";
-import { loadingTimeline, timelinePeople, timelineProcess, timelineProjects, timelineSupport } from "./timelines";
+import { cloudsTimeline, loadingTimeline, timelinePeople, timelineProcess, timelineProjects, timelineSupport } from "./timelines";
 
 export class Triakis {
-  constructor() {
+  constructor(parentClass) {
     this.manager = Manager.instance;
     const { scene, resources, cameraClass } = this.manager;
     this.scene = scene;
     this.camera = cameraClass.camera;
     this.resources = resources;
-    this.projectsGallery = new ProjectsGallery();
-    this.sectionImages = new SectionImages();
+    this.projectsGallery = parentClass.projectsGallery;
+    this.sectionImages = parentClass.sectionImages;
     this.init();
   }
 
   debug() {
     const onDebug = (debug) => {
-      debug.addSceneObject({ name: "highlightOneGroup", object: this.highlightOne.group });
-      debug.addSceneObject({ name: "highlightTwoGroup", object: this.highlightTwo.group });
-      debug.addSceneObject({ name: "highlightThreeGroup", object: this.highlightThree.group });
+      // debug.addSceneObject({ name: "peopleGroup", object: this.peopleGroup });
+      // debug.addSceneObject({ name: "highlightOneGroup", object: this.highlightOne.group });
+      // debug.addSceneObject({ name: "highlightTwoGroup", object: this.highlightTwo.group });
+      // debug.addSceneObject({ name: "highlightThreeGroup", object: this.highlightThree.group });
+      // debug.addSceneObject({ name: "triangleMain", object: this.triangleOutlineMain.triangle });
+      // debug.addSceneObject({ name: "triangleLeft", object: this.triangleOutlineLeft.triangle });
+      // debug.addSceneObject({ name: "triangleRight", object: this.triangleOutlineRight.triangle });
+      // debug.addSceneObject({ name: "camera", object: this.camera });
+
+      // debug.addCustomConfig(this.camera, (folder) => {
+      //   const lookAtParams = {
+      //     x: 0,
+      //     y: 0,
+      //     z: 0
+      //   };
+
+      //   folder.addBinding(lookAtParams, 'x', {
+      //     label: 'LookAt X',
+      //     min: -1,
+      //     max: 1
+      //   }).on('change', () => {
+      //     this.camera.lookAt(lookAtParams.x, lookAtParams.y, lookAtParams.z);
+      //   });
+
+      //   folder.addBinding(lookAtParams, 'y', {
+      //     label: 'LookAt Y',
+      //     min: -1,
+      //     max: 1
+      //   }).on('change', () => {
+      //     this.camera.lookAt(lookAtParams.x, lookAtParams.y, lookAtParams.z);
+      //   });
+
+      //   folder.addBinding(lookAtParams, 'z', {
+      //     label: 'LookAt Z',
+      //     min: -1,
+      //     max: 1
+      //   }).on('change', () => {
+      //     this.camera.lookAt(lookAtParams.x, lookAtParams.y, lookAtParams.z);
+      //   });
+      // });
     }
 
     this.manager.signals.debug.subscribe(onDebug);
@@ -32,7 +66,7 @@ export class Triakis {
 
   createGroups() {
     this.loaderGroup = new Group();
-    this.loaderGroup.scale.set(0, 0, 0);
+    this.loaderGroup.scale.set(0.5, 0.5, 0.5);
     this.loaderGroup.position.x = -0.013;
     this.loaderGroup.rotation.set(
       Math.PI * -0.1,
@@ -53,11 +87,13 @@ export class Triakis {
   }
 
   createTimelines() {
-    loadingTimeline(this);
-
     const ease = "none";
     const duration = 1;
     const imageDuration = 0.5;
+
+    loadingTimeline(this);
+
+    cloudsTimeline(duration);
 
     const triggers = [
       {
@@ -98,9 +134,9 @@ export class Triakis {
   }
 
   createHighlights() {
-    this.highlightOne = new TriakisHighlight(this.supportGroup);
-    this.highlightTwo = new TriakisHighlight(this.supportGroup);
-    this.highlightThree = new TriakisHighlight(this.supportGroup);
+    this.highlightOne = new TriakisHighlight(this.supportGroup, '#people');
+    this.highlightTwo = new TriakisHighlight(this.supportGroup, '#projects');
+    this.highlightThree = new TriakisHighlight(this.supportGroup, '#process');
 
     this.highlightOne.group.position.set(-0.54, -0.11, -0.35);
     this.highlightTwo.group.position.set(-0.59, -0.26, 0.2);
@@ -129,8 +165,6 @@ export class Triakis {
     this.createHighlights();
     this.createTimelines();
 
-    if (this.manager.hasDebug) {
-      this.debug();
-    }
+    this.debug();
   }
 }

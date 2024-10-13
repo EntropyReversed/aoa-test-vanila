@@ -47,11 +47,7 @@ export class Debug {
           this.createTransformControls(object, folder, { position: true, scale: false, rotation: false });
         }
 
-        if (object.isMesh) {
-          this.createTransformControls(object, folder);
-        }
-
-        if (object.isGroup) {
+        if (object.isMesh || object.isLine || object.isGroup) {
           this.createTransformControls(object, folder);
         }
 
@@ -107,9 +103,9 @@ export class Debug {
   }
 
   createGeometryPositionControls(mesh, folder) {
-    folder.addBinding(mesh.position, 'x', { label: 'x', min: -1, max: 1 });
-    folder.addBinding(mesh.position, 'y', { label: 'y', min: -1, max: 1 });
-    folder.addBinding(mesh.position, 'z', { label: 'z', min: -1, max: 1 });
+    folder.addBinding(mesh.position, 'x', { label: 'x', min: -3, max: 3 });
+    folder.addBinding(mesh.position, 'y', { label: 'y', min: -3, max: 3 });
+    folder.addBinding(mesh.position, 'z', { label: 'z', min: -3, max: 3 });
   }
 
   createGeometryRotationControls(mesh, folder) {
