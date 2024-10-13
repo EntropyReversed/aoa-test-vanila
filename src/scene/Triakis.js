@@ -5,6 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ProjectsGallery } from "./ProjectsGallery";
 import { BackgroundTriangles } from "./BackgroundTriangles";
 import { SectionImages } from "./SectionImages";
+import { TriakisHighlight } from "./TriakisHighlight";
 
 export class Triakis {
   constructor() {
@@ -23,9 +24,9 @@ export class Triakis {
       this.refreshDebug = debug.refresh;
 
       debug.addSceneObject({ name: "Triakis", object: this.model });
-      debug.addSceneObject({ name: "processGroup", object: this.processGroup });
-      debug.addSceneObject({ name: "peopleGroup", object: this.peopleGroup });
-      debug.addSceneObject({ name: "projectsGroup", object: this.projectsGroup });
+      debug.addSceneObject({ name: "highlightOneGroup", object: this.highlightOne.group });
+      debug.addSceneObject({ name: "highlightTwoGroup", object: this.highlightTwo.group });
+      debug.addSceneObject({ name: "highlightThreeGroup", object: this.highlightThree.group });
       debug.addSceneObject({ name: "Camera", object: this.camera });
 
       debug.addCustomConfig(this.camera, (folder) => {
@@ -89,7 +90,7 @@ export class Triakis {
       color: 'white',
       map: this.colorMap,
       metalness: 0.9,
-      roughness: 0.35,
+      roughness: 0.4,
       opacity: 0,
       transparent: true,
     });
@@ -115,6 +116,13 @@ export class Triakis {
 
     this.processGroup = new Group();
     this.processGroup.name = "ProcessGroup";
+
+    this.highlightOne = new TriakisHighlight(this.supportGroup);
+    this.highlightOne.group.position.set(-0.54, -0.11, -0.35);
+    this.highlightTwo = new TriakisHighlight(this.supportGroup);
+    this.highlightTwo.group.position.set(-0.59, -0.26, 0.2);
+    this.highlightThree = new TriakisHighlight(this.supportGroup);
+    this.highlightThree.group.position.set(-0.3, -0.52, -0.17);
     // this.projectsGroup.position.set(0, 0, 0);
 
     // this.supportGroup.position.set(0, 0, 0);
@@ -161,12 +169,19 @@ export class Triakis {
         z: 0, x: Math.PI * -0.2, duration: 2, ease: "power2.out"
       }, '<')
       .to('.projects-slider', {
-        opacity: 0.9, duration: 6, ease: "power2.out",
+        opacity: 0.8, duration: 6, ease: "power2.out",
         onStart: () => {
           this.projectsGallery.initGallery();
           this.sectionImages.init();
         }
       }, '<')
+      .fromTo([
+        this.highlightOne.mesh.material.uniforms.uRevealOpacity,
+        this.highlightTwo.mesh.material.uniforms.uRevealOpacity,
+        this.highlightThree.mesh.material.uniforms.uRevealOpacity,
+      ], { value: 0 }, {
+        value: 1, duration: 2
+      }, '<+=1')
 
       .to([
         this.triangleOutlineMain.uRevealOpacity,
@@ -184,7 +199,7 @@ export class Triakis {
             contentVisibility: 'visible',
           })
         }
-      }, '<+=1.2')
+      }, '<')
 
     //supportGroup
     const timelineSupport = gsap.timeline({ ease: "none" })
@@ -222,17 +237,42 @@ export class Triakis {
       .fromTo(this.camera.position, { x: 0, y: 0.2 }, { x: 1.2, y: 0.35, duration: defaultDuration })
       .to(this.peopleGroup.rotation, { x: -0.1, y: 0.4, z: 4, duration: defaultDuration }, '<')
       .to(this.peopleGroup.scale, { x: 0.85, y: 0.85, z: 0.85, duration: defaultDuration }, '<')
-      .to(this.sectionImagesImages[0], { opacity: 1, duration: imageFadeDuration }, '<');
+      .to(this.sectionImagesImages[0], { opacity: 1, duration: imageFadeDuration }, '<')
+      .to([
+        this.highlightOne.group.scale,
+        this.highlightTwo.group.scale,
+        this.highlightThree.group.scale,
+      ], { x: 0.2, y: 0.2, z: 0.2, stagger: 0.1, duration: defaultDuration * 0.4, ease: 'power1.inOut' }, '<')
+      .to([
+        this.highlightOne.mesh.material.uniforms.uOpacity,
+        this.highlightTwo.mesh.material.uniforms.uOpacity,
+        this.highlightThree.mesh.material.uniforms.uOpacity,
+      ], { value: 1, duration: defaultDuration * 0.3, ease: 'power1.inOut' }, '<+=0.1')
+      .fromTo(this.highlightOne.mesh.material.uniforms.uTransition, { value: 0 }, {
+        value: 1, duration: defaultDuration * 0.4, ease: 'power1.inOut'
+      }, '<+0.3')
 
     // Timeline for "Projects" section
     const timelineProjects = gsap.timeline({ ease: defaultEase })
       .to(this.projectsGroup.rotation, { x: 0.14, y: 0.82, z: 1.91, duration: defaultDuration })
-      .to(this.sectionImagesImages[1], { opacity: 1, duration: imageFadeDuration }, '<');
+      .to(this.sectionImagesImages[1], { opacity: 1, duration: imageFadeDuration }, '<')
+      .fromTo(this.highlightOne.mesh.material.uniforms.uTransition, { value: 1 }, {
+        value: 0, duration: defaultDuration * 0.4, ease: 'power1.inOut'
+      }, '<+0.3')
+      .fromTo(this.highlightTwo.mesh.material.uniforms.uTransition, { value: 0 }, {
+        value: 1, duration: defaultDuration * 0.4, ease: 'power1.inOut'
+      }, '<')
 
     // Timeline for "Process" section
     const timelineProcess = gsap.timeline({ ease: defaultEase })
       .to(this.processGroup.rotation, { x: 0.41, y: 1.09, z: 1.64, duration: defaultDuration })
-      .to(this.sectionImagesImages[2], { opacity: 1, duration: imageFadeDuration }, '<');
+      .to(this.sectionImagesImages[2], { opacity: 1, duration: imageFadeDuration }, '<')
+      .fromTo(this.highlightTwo.mesh.material.uniforms.uTransition, { value: 1 }, {
+        value: 0, duration: defaultDuration * 0.4, ease: 'power1.inOut'
+      }, '<+0.3')
+      .fromTo(this.highlightThree.mesh.material.uniforms.uTransition, { value: 0 }, {
+        value: 1, duration: defaultDuration * 0.4, ease: 'power1.inOut'
+      }, '<')
 
     const triggers = [
       { trigger: '#home', animation: timelineSupport },

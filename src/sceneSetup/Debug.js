@@ -107,9 +107,9 @@ export class Debug {
   }
 
   createGeometryPositionControls(mesh, folder) {
-    folder.addBinding(mesh.position, 'x', { label: 'x', min: -10, max: 10 });
-    folder.addBinding(mesh.position, 'y', { label: 'y', min: -10, max: 10 });
-    folder.addBinding(mesh.position, 'z', { label: 'z', min: -10, max: 10 });
+    folder.addBinding(mesh.position, 'x', { label: 'x', min: -1, max: 1 });
+    folder.addBinding(mesh.position, 'y', { label: 'y', min: -1, max: 1 });
+    folder.addBinding(mesh.position, 'z', { label: 'z', min: -1, max: 1 });
   }
 
   createGeometryRotationControls(mesh, folder) {
