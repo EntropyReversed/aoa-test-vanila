@@ -3,7 +3,7 @@ import { assetsTypes } from "../sceneSetup/constants";
 const {
   glbModel,
   texture,
-  hdrTexture,
+  gainMapTexture
 } = assetsTypes;
 
 export default [
@@ -12,11 +12,6 @@ export default [
     type: glbModel,
     path: "/assets/models/triakis.glb",
   },
-  // {
-  //   name: "tealLayer",
-  //   type: texture,
-  //   path: "/assets/textures/tealLayer.webp",
-  // },
   {
     name: "colorLayer",
     type: texture,
@@ -33,8 +28,12 @@ export default [
     path: "/assets/textures/triakis-highlight-full.webp",
   },
   {
-    name: "skyBox",
-    type: hdrTexture,
-    path: "/assets/textures/clouds.hdr",
+    name: "gainMap",
+    type: gainMapTexture,
+    path: [
+      "/clouds.webp",
+      "/clouds-gainmap.webp",
+      "/clouds.json",
+    ],
   },
 ];

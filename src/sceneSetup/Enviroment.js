@@ -53,6 +53,7 @@ export default class Environment {
   }
 
   setSkybox(skyboxConfig) {
+    // Modify to handle gainmap textures
     if (this.skybox) {
       if (this.scene.background === this.skybox) {
         this.scene.background = null;
@@ -68,24 +69,29 @@ export default class Environment {
       return;
     }
 
-    if (!texture.isTexture) {
-      console.warn(`Unsupported texture type for skybox: ${skyboxConfig.name}`);
+    if (texture.isGainMap) {
+      this.scene.background = texture.renderTarget.texture;
+      this.scene.background.mapping = EquirectangularReflectionMapping;
+      this.pmremGenerator.compileEquirectangularShader();
+      texture.dispose();
       return;
     }
 
-    this.pmremGenerator.compileEquirectangularShader();
-    this.skybox = this.pmremGenerator.fromEquirectangular(texture).texture;
-    this.skybox.rotation = Math.PI;
+    if (texture.isTexture) {
+      this.pmremGenerator.compileEquirectangularShader();
+      this.skybox = this.pmremGenerator.fromEquirectangular(texture).texture;
+      this.skybox.rotation = Math.PI;
 
-    if (skyboxConfig.background) {
-      this.scene.background = this.skybox;
-    }
-    if (skyboxConfig.environment) {
-      this.scene.environment = this.skybox;
-    }
+      if (skyboxConfig.background) {
+        this.scene.background = this.skybox;
+      }
+      if (skyboxConfig.environment) {
+        this.scene.environment = this.skybox;
+      }
 
-    texture.dispose();
-    this.pmremGenerator.dispose();
+      texture.dispose();
+      this.pmremGenerator.dispose();
+    }
   }
 
   setPosition(object, position) {

@@ -35,9 +35,8 @@ export default class TriakisAnimation {
       }
     ]
 
-    // name from assets
     this.enviroment.setSkybox({
-      name: 'skyBox',
+      name: 'gainMap',
       environment: true,
     });
 

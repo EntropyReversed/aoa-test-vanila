@@ -2,6 +2,7 @@ export const assetsTypes = {
   glbModel: "glbModel",
   texture: "texture",
   hdrTexture: "hdrTexture",
+  gainMapTexture: "gainMapTexture",
 }
 
 export const loadingStates = {
