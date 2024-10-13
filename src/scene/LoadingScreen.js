@@ -19,9 +19,6 @@ export class LoadingScreen {
         innerHTML: `${Math.floor(progress * 100)}%`,
         roundProps: "innerHTML",
         snap: { innerHTML: 1 },
-        onStart: () => {
-          gsap.set(window, { scrollTo: 0 });
-        }
       })
       .to(this.loaderWrap, {
         '--progress': progress,

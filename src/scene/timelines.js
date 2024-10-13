@@ -60,7 +60,6 @@ export const loadingTimeline = (parentClass) => {
       opacity: 0.8, duration: 6, ease: "power2.out",
       onStart: () => {
         projectsGallery.initGallery();
-        sectionImages.init();
       }
     }, 'start')
     .to([

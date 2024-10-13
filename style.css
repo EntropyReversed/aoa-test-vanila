@@ -345,5 +345,16 @@ img[data-src] {
   grid-row-start: 1;
   opacity: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
+  object-fit: cover;
+}
+
+.section-images .section-images__image:nth-of-type(1) {
+  z-index: 1;
+}
+.section-images .section-images__image:nth-of-type(2) {
+  z-index: 2;
+}
+.section-images .section-images__image:nth-of-type(3) {
+  z-index: 3;
 }
