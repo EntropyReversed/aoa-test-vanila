@@ -12,14 +12,42 @@ export class TriakisHighlight {
     this.textureBase = this.resources.items.triakisHighlight;
     this.textureBaseFull = this.resources.items.triakisHighlightFull;
 
+    this._uTransition = { value: 0 };
+    this._uOpacity = { value: 0 };
+    this._uRevealOpacity = { value: 0 };
+
     this.uniforms = {
       uTexBase: new Uniform(this.textureBase),
       uTexFull: new Uniform(this.textureBaseFull),
-      uTransition: new Uniform(0),
-      uOpacity: new Uniform(0),
-      uRevealOpacity: new Uniform(0),
+      uTransition: this._uTransition,
+      uOpacity: this._uOpacity,
+      uRevealOpacity: this._uRevealOpacity,
     };
     this.createHighlight();
+  }
+
+  get uTransition() {
+    return this._uTransition;
+  }
+
+  set uTransition(value) {
+    this._uTransition.value = value;
+  }
+
+  get uOpacity() {
+    return this._uOpacity;
+  }
+
+  set uOpacity(value) {
+    this._uOpacity.value = value;
+  }
+
+  get uRevealOpacity() {
+    return this._uRevealOpacity;
+  }
+
+  set uRevealOpacity(value) {
+    this._uRevealOpacity.value = value;
   }
 
   createHighlight() {

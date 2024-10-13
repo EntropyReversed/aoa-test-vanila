@@ -175,11 +175,11 @@ export class Triakis {
           this.sectionImages.init();
         }
       }, '<')
-      .fromTo([
-        this.highlightOne.mesh.material.uniforms.uRevealOpacity,
-        this.highlightTwo.mesh.material.uniforms.uRevealOpacity,
-        this.highlightThree.mesh.material.uniforms.uRevealOpacity,
-      ], { value: 0 }, {
+      .to([
+        this.highlightOne.uRevealOpacity,
+        this.highlightTwo.uRevealOpacity,
+        this.highlightThree.uRevealOpacity,
+      ], {
         value: 1, duration: 2
       }, '<+=1')
 
@@ -244,34 +244,34 @@ export class Triakis {
         this.highlightThree.group.scale,
       ], { x: 0.2, y: 0.2, z: 0.2, stagger: 0.1, duration: defaultDuration * 0.4, ease: 'power1.inOut' }, '<')
       .to([
-        this.highlightOne.mesh.material.uniforms.uOpacity,
-        this.highlightTwo.mesh.material.uniforms.uOpacity,
-        this.highlightThree.mesh.material.uniforms.uOpacity,
+        this.highlightOne.uOpacity,
+        this.highlightTwo.uOpacity,
+        this.highlightThree.uOpacity,
       ], { value: 1, duration: defaultDuration * 0.3, ease: 'power1.inOut' }, '<+=0.1')
-      .fromTo(this.highlightOne.mesh.material.uniforms.uTransition, { value: 0 }, {
-        value: 1, duration: defaultDuration * 0.4, ease: 'power1.inOut'
+      .to(this.highlightOne.uTransition, {
+        value: 1, duration: defaultDuration * 0.4,
       }, '<+0.3')
 
     // Timeline for "Projects" section
     const timelineProjects = gsap.timeline({ ease: defaultEase })
       .to(this.projectsGroup.rotation, { x: 0.14, y: 0.82, z: 1.91, duration: defaultDuration })
       .to(this.sectionImagesImages[1], { opacity: 1, duration: imageFadeDuration }, '<')
-      .fromTo(this.highlightOne.mesh.material.uniforms.uTransition, { value: 1 }, {
-        value: 0, duration: defaultDuration * 0.4, ease: 'power1.inOut'
+      .to(this.highlightOne.uTransition, {
+        value: 0, duration: defaultDuration * 0.4,
       }, '<+0.3')
-      .fromTo(this.highlightTwo.mesh.material.uniforms.uTransition, { value: 0 }, {
-        value: 1, duration: defaultDuration * 0.4, ease: 'power1.inOut'
+      .to(this.highlightTwo.uTransition, {
+        value: 1, duration: defaultDuration * 0.4,
       }, '<')
 
     // Timeline for "Process" section
     const timelineProcess = gsap.timeline({ ease: defaultEase })
       .to(this.processGroup.rotation, { x: 0.41, y: 1.09, z: 1.64, duration: defaultDuration })
       .to(this.sectionImagesImages[2], { opacity: 1, duration: imageFadeDuration }, '<')
-      .fromTo(this.highlightTwo.mesh.material.uniforms.uTransition, { value: 1 }, {
-        value: 0, duration: defaultDuration * 0.4, ease: 'power1.inOut'
+      .to(this.highlightTwo.uTransition, {
+        value: 0, duration: defaultDuration * 0.4,
       }, '<+0.3')
-      .fromTo(this.highlightThree.mesh.material.uniforms.uTransition, { value: 0 }, {
-        value: 1, duration: defaultDuration * 0.4, ease: 'power1.inOut'
+      .to(this.highlightThree.uTransition, {
+        value: 1, duration: defaultDuration * 0.4,
       }, '<')
 
     const triggers = [
