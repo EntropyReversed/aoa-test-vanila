@@ -56,9 +56,7 @@ export default class Manager {
     this.sizes = new Sizes(this.manualSizes);
     this.cameraClass = new Camera();
     this.rendererClass = new Renderer();
-    if (Boolean(this.assets.length)) {
-      this.resources = new Resources(this.assets);
-    }
+    this.resources = new Resources(this.assets);
     this.enviroment = new Enviroment();
     this.screenSizer = new ScreenSizer();
     this.raycasterClass = new RaycasterClass();

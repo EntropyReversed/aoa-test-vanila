@@ -15,6 +15,10 @@ export default class Resources {
     this.manager = Manager.instance;
     this.renderer = this.manager.rendererClass.renderer;
     this.assets = assets;
+    if (!Boolean(this.assets.length)) {
+      console.warn('No assets provided');
+      return;
+    }
     this.init();
   }
 

@@ -3,6 +3,7 @@ import Manager from "./Manager";
 export default class Sizes {
   constructor({ width, height }) {
     this.manager = Manager.instance;
+    this.renderOnDemand = this.manager.renderOnDemand;
     this.manualResize = Boolean(width && height);
     this.widthInit = width || window.innerWidth;
     this.heightinit = height || window.innerHeight;
@@ -16,6 +17,10 @@ export default class Sizes {
 
     this.aspect = this.width / this.height;
     this.pixelRatio = Math.min(window.devicePixelRatio, 2);
+
+    if (this.renderOnDemand) {
+      this.manager.requestRender();
+    }
 
     this.resizeSignal.setValue({
       width: this.width,
