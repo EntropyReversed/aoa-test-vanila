@@ -8,9 +8,9 @@ import { LazyImages } from "./src/LazyImages";
 import { triakisAnimationInit } from "./src/scene/triakisAnimationInit";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-ScrollTrigger.normalizeScroll({
-  allowNestedScroll: true,
-});
+// ScrollTrigger.normalizeScroll({
+//   allowNestedScroll: true,
+// });
 
 // const lenis = new Lenis();
 // lenis.on('scroll', ScrollTrigger.update);
