@@ -72,16 +72,16 @@ export class Debug {
   }
 
   createTransformControls(mesh, folder, type = { scale: true, position: true, rotation: true }) {
-    if (type.scale) {
-      this.createGeometryScaleControls(mesh, folder.addFolder({ title: 'Scale' }));
-    }
-
     if (type.position) {
       this.createGeometryPositionControls(mesh, folder.addFolder({ title: 'Position' }));
     }
 
     if (type.rotation) {
-      this.createGeometryRotationControls(mesh, folder.addFolder({ title: 'Rotation' }));
+      this.createGeometryRotationControls(mesh, folder.addFolder({ title: 'Rotation', expanded: false }));
+    }
+
+    if (type.scale) {
+      this.createGeometryScaleControls(mesh, folder.addFolder({ title: 'Scale', expanded: false }));
     }
   }
 

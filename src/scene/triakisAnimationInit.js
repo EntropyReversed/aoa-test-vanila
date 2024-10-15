@@ -1,7 +1,3 @@
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-
 import Manager from "../sceneSetup/Manager";
 import TriakisAnimation from "./TriakisAnimation";
 import assets from "./assets";
@@ -10,11 +6,6 @@ import { loadingStates } from "../sceneSetup/constants";
 export const triakisAnimationInit = () => {
   const wrap = document.getElementById("scene");
   if (wrap) {
-    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-    ScrollTrigger.normalizeScroll({
-      allowNestedScroll: true,
-    });
-
     const { signals } = new Manager({
       wrap,
       assets,

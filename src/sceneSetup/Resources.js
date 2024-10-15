@@ -1,11 +1,10 @@
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 import { TextureLoader, LoadingManager } from "three";
 import { GainMapLoader } from '@monogrid/gainmap-js'
 import Manager from './Manager';
 import { assetsTypes, loadingStates } from './constants';
 
-const { glbModel, texture, hdrTexture, gainMapTexture } = assetsTypes;
+const { glbModel, texture, gainMapTexture } = assetsTypes;
 
 export default class Resources {
   items = {};
@@ -26,7 +25,6 @@ export default class Resources {
     const loaderMap = {
       [glbModel]: this.loaders.gltfLoader,
       [texture]: this.loaders.textureLoader,
-      [hdrTexture]: this.loaders.rgbeLoader,
       [gainMapTexture]: this.loaders.gainMapLoader,
     };
 
@@ -35,7 +33,6 @@ export default class Resources {
 
       if (loader) {
         loader.load(asset.path, (result) => {
-          console.log(result, asset.name)
           if (asset.type === gainMapTexture) {
             this.items[asset.name] = result.renderTarget.texture;
           } else {
@@ -75,7 +72,6 @@ export default class Resources {
     this.loaders = {};
     this.loaders.gltfLoader = new GLTFLoader(this.loadingManager);
     this.loaders.textureLoader = new TextureLoader(this.loadingManager);
-    this.loaders.rgbeLoader = new RGBELoader(this.loadingManager);
     this.loaders.gainMapLoader = new GainMapLoader(this.renderer, this.loadingManager);
 
     this.loadedSignal.setValue({ status: loadingStates.loading, progress: 0 });

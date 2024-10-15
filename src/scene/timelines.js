@@ -1,5 +1,8 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { linearMap } from "./helpers";
+
+const mobileBreak = 767;
 
 export const createTimeline = (config, manager) => {
   return gsap.timeline({
@@ -8,6 +11,7 @@ export const createTimeline = (config, manager) => {
   })
 };
 
+// MARK: Loading
 export const loadingTimeline = (parentClass) => {
   const {
     manager,
@@ -88,6 +92,7 @@ export const loadingTimeline = (parentClass) => {
     }, 'start+=1.3')
 }
 
+// MARK: Support
 export const timelineSupport = (parentClass, ease, duration) => {
   const {
     manager,
@@ -102,7 +107,7 @@ export const timelineSupport = (parentClass, ease, duration) => {
   return createTimeline({ ease }, manager)
     .to(supportGroup.rotation, {
       x: -1.8, y: 0.66, z: 1.1, duration,
-    })
+    }, '<')
     .to(supportGroup.scale, {
       x: 0.9, y: 0.9, z: 0.9, duration,
     }, '<')
@@ -124,9 +129,11 @@ export const timelineSupport = (parentClass, ease, duration) => {
     }, '<')
 }
 
+// MARK: People
 export const timelinePeople = (parentClass, ease, duration, imageFadeDuration) => {
   const {
     manager,
+    sizes,
     peopleGroup,
     sectionImages,
     highlightOne,
@@ -137,7 +144,11 @@ export const timelinePeople = (parentClass, ease, duration, imageFadeDuration) =
   const sectionImagesImages = sectionImages.images;
 
   return createTimeline({ ease }, manager)
-    .to(camera.position, { x: 1.2, y: 0.35, duration })
+    .to(camera.position, {
+      x: () => sizes.width < mobileBreak ? 0 : linearMap(sizes.width, mobileBreak, 1200, 0.9, 1.2),
+      y: () => sizes.width < mobileBreak ? -0.1 : 0.35,
+      duration,
+    })
     .to(peopleGroup.rotation, { x: -0.1, y: 0.4, z: 4, duration }, '<')
     .to(peopleGroup.scale, { x: 0.85, y: 0.85, z: 0.85, duration }, '<')
     .to(sectionImagesImages[0], { opacity: 1, duration: imageFadeDuration }, '<')
@@ -151,13 +162,12 @@ export const timelinePeople = (parentClass, ease, duration, imageFadeDuration) =
       highlightTwo.uOpacity,
       highlightThree.uOpacity,
     ], { value: 1, stagger: 0.1, duration: duration * 0.2, ease: 'power1.inOut' }, '<')
-
-    .to(highlightOne.uTransition, {
+    .fromTo(highlightOne.uTransition, { value: 0 }, {
       value: 1, duration: duration * 0.4,
-    }, '<+0.2')
-
+    }, '<+0.2');
 }
 
+// MARK: Projects
 export const timelineProjects = (parentClass, ease, duration, imageFadeDuration) => {
   const {
     manager,
@@ -171,14 +181,15 @@ export const timelineProjects = (parentClass, ease, duration, imageFadeDuration)
   return createTimeline({ ease }, manager)
     .to(projectsGroup.rotation, { x: 0.14, y: 0.82, z: 1.91, duration })
     .to(sectionImagesImages[1], { opacity: 1, duration: imageFadeDuration }, '<')
-    .to(highlightOne.uTransition, {
+    .fromTo(highlightOne.uTransition, { value: 1 }, {
       value: 0, duration: duration * 0.4,
     }, '<+0.3')
-    .to(highlightTwo.uTransition, {
+    .fromTo(highlightTwo.uTransition, { value: 0 }, {
       value: 1, duration: duration * 0.4,
     }, '<')
 }
 
+// MARK: Process
 export const timelineProcess = (parentClass, ease, duration, imageFadeDuration) => {
   const {
     manager,
@@ -192,14 +203,15 @@ export const timelineProcess = (parentClass, ease, duration, imageFadeDuration) 
   return createTimeline({ ease }, manager)
     .to(processGroup.rotation, { x: 0.41, y: 1.09, z: 1.64, duration })
     .to(sectionImagesImages[2], { opacity: 1, duration: imageFadeDuration }, '<')
-    .to(highlightTwo.uTransition, {
+    .fromTo(highlightTwo.uTransition, { value: 1 }, {
       value: 0, duration: duration * 0.4,
     }, '<+0.3')
-    .to(highlightThree.uTransition, {
+    .fromTo(highlightThree.uTransition, { value: 0 }, {
       value: 1, duration: duration * 0.4,
     }, '<')
 }
 
+// MARK: Clouds
 export const cloudsTimeline = (duration) => {
   const animationOne = gsap.timeline()
     .to('.clouds--back', {

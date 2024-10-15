@@ -14,6 +14,27 @@ body {
   min-height: 100vh;
 }
 
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
 #scene {
   position: sticky;
   top: 0;
@@ -357,4 +378,33 @@ img[data-src] {
 }
 .section-images .section-images__image:nth-of-type(3) {
   z-index: 3;
+}
+
+#people .triakis-section__inner,
+#projects .triakis-section__inner,
+#process .triakis-section__inner {
+  flex-direction: column;
+  width: 50%;
+  margin-left: auto;
+  align-items: start;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.triakis-section p {
+  font-size: 1rem;
+}
+
+@media (width < 767px) {
+  .triakis-section {
+    /* opacity: 0.2; */
+  }
+
+  #people .triakis-section__inner,
+  #projects .triakis-section__inner,
+  #process .triakis-section__inner {
+    width: 100%;
+    justify-content: flex-end;
+    padding-bottom: 4rem;
+  }
 }

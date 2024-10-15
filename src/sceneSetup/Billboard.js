@@ -22,7 +22,11 @@ export class Billboard {
     this.group = new Group();
     this.group.name = "Billboard";
     this.groupInner = new Group();
-    this.groupInner.add(this.children);
+    if (Array.isArray(this.children)) {
+      this.children.forEach((child) => this.groupInner.add(child));
+    } else {
+      this.groupInner.add(this.children);
+    }
     this.group.add(this.groupInner);
     if (this.autoAdd) this.scene.add(this.group);
     this.updateSignal.subscribe(this.updateCallback, 0);

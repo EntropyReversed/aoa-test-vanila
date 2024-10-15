@@ -2,14 +2,17 @@ import { Group, MeshStandardMaterial } from "three";
 import Manager from "../sceneSetup/Manager";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { BackgroundTriangles } from "./BackgroundTriangles";
-import { TriakisHighlight } from "./TriakisHighlight";
 import { cloudsTimeline, loadingTimeline, timelinePeople, timelineProcess, timelineProjects, timelineSupport } from "./timelines";
+import { TriakisHighlights } from "./TriakisHighlights";
+import gsap from "gsap";
+import { linearMap } from "./helpers";
 
 export class Triakis {
   constructor(parentClass) {
     this.manager = Manager.instance;
-    const { scene, resources, cameraClass } = this.manager;
+    const { scene, sizes, resources, cameraClass } = this.manager;
     this.scene = scene;
+    this.sizes = sizes;
     this.camera = cameraClass.camera;
     this.resources = resources;
     this.projectsGallery = parentClass.projectsGallery;
@@ -19,14 +22,14 @@ export class Triakis {
 
   debug() {
     const onDebug = (debug) => {
-      debug.addSceneObject({ name: "triakis", object: this.model });
-      // debug.addSceneObject({ name: "highlightOneGroup", object: this.highlightOne.group });
-      // debug.addSceneObject({ name: "highlightTwoGroup", object: this.highlightTwo.group });
-      // debug.addSceneObject({ name: "highlightThreeGroup", object: this.highlightThree.group });
+      // debug.addSceneObject({ name: "triakis", object: this.model });
+      debug.addSceneObject({ name: "highlightOneGroup", object: this.highlightOne.group });
+      debug.addSceneObject({ name: "highlightTwoGroup", object: this.highlightTwo.group });
+      debug.addSceneObject({ name: "highlightThreeGroup", object: this.highlightThree.group });
       // debug.addSceneObject({ name: "triangleMain", object: this.triangleOutlineMain.triangle });
       // debug.addSceneObject({ name: "triangleLeft", object: this.triangleOutlineLeft.triangle });
       // debug.addSceneObject({ name: "triangleRight", object: this.triangleOutlineRight.triangle });
-      debug.addSceneObject({ name: "camera", object: this.camera });
+      // debug.addSceneObject({ name: "camera", object: this.camera });
 
       // debug.addCustomConfig(this.camera, (folder) => {
       //   const lookAtParams = {
@@ -92,7 +95,6 @@ export class Triakis {
     const imageDuration = 0.5;
 
     loadingTimeline(this);
-
     cloudsTimeline(duration);
 
     const triggers = [
@@ -121,6 +123,7 @@ export class Triakis {
         end: "bottom top",
         animation,
         scrub: 1,
+        invalidateOnRefresh: true,
       });
     });
   }
@@ -134,27 +137,26 @@ export class Triakis {
   }
 
   createHighlights() {
-    this.highlightOne = new TriakisHighlight(this.supportGroup, '#people');
-    this.highlightTwo = new TriakisHighlight(this.supportGroup, '#projects');
-    this.highlightThree = new TriakisHighlight(this.supportGroup, '#process');
+    this.triakisHighlights = new TriakisHighlights(this.model)
+    this.highlightOne = this.triakisHighlights.highlightOne;
+    this.highlightTwo = this.triakisHighlights.highlightTwo;
+    this.highlightThree = this.triakisHighlights.highlightThree;
 
-    this.highlightOne.group.position.set(-0.54, -0.11, -0.35);
-    this.highlightTwo.group.position.set(-0.59, -0.26, 0.2);
-    this.highlightThree.group.position.set(-0.3, -0.52, -0.17);
   }
 
   createModel() {
     this.model = this.resources.items.model.scene.children[0];
     this.colorMap = this.resources.items.colorLayer;
-
-    this.model.material = new MeshStandardMaterial({
+    const material = new MeshStandardMaterial({
       color: 'white',
       map: this.colorMap,
       metalness: 0.9,
-      roughness: 0.35,
+      roughness: 0.38,
       opacity: 0,
       transparent: true,
     });
+    this.model.material = material;
+    material.dispose();
     this.colorMap.dispose();
   }
 
@@ -164,6 +166,20 @@ export class Triakis {
     this.createGroups();
     this.createHighlights();
     this.createTimelines();
+
+    const setUpCameraZoom = (camera, width) => {
+      gsap.set(camera.position, {
+        z: () => {
+          if (width > 1000) return linearMap(width, 1000, 1920, 2, 1.8);
+          return linearMap(width, 300, 1000, 3.4, 2)
+        },
+      })
+    }
+
+    setUpCameraZoom(this.camera, this.sizes.width);
+    this.manager.signals.resize.subscribe(({ width }) => {
+      setUpCameraZoom(this.camera, width);
+    })
 
     this.debug();
   }
