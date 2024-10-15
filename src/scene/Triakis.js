@@ -22,7 +22,7 @@ export class Triakis {
 
   debug() {
     const onDebug = (debug) => {
-      // debug.addSceneObject({ name: "triakis", object: this.model });
+      debug.addSceneObject({ name: "triakis", object: this.model });
       debug.addSceneObject({ name: "highlightOneGroup", object: this.highlightOne.group });
       debug.addSceneObject({ name: "highlightTwoGroup", object: this.highlightTwo.group });
       debug.addSceneObject({ name: "highlightThreeGroup", object: this.highlightThree.group });

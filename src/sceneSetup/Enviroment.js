@@ -53,7 +53,6 @@ export default class Environment {
   }
 
   setSkybox(skyboxConfig) {
-    // Modify to handle gainmap textures
     if (this.skybox) {
       if (this.scene.background === this.skybox) {
         this.scene.background = null;
@@ -66,14 +65,6 @@ export default class Environment {
     const texture = this.resources.items[skyboxConfig.name];
     if (!texture) {
       console.warn(`Skybox texture '${skyboxConfig.name}' not found in resources.`);
-      return;
-    }
-
-    if (texture.isGainMap) {
-      this.scene.background = texture.renderTarget.texture;
-      this.scene.background.mapping = EquirectangularReflectionMapping;
-      this.pmremGenerator.compileEquirectangularShader();
-      texture.dispose();
       return;
     }
 

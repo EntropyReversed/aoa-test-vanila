@@ -13,13 +13,6 @@ export default class TriakisAnimation {
 
   setUpEnvironment() {
     const lights = [
-      // {
-      //   type: 'directional',
-      //   color: '#ffffff',
-      //   intensity: 2,
-      //   position: [5, 9, 10],
-      //   target: [0, 0, 0],
-      // },
       {
         type: 'directional',
         color: '#ffffff',
@@ -31,7 +24,6 @@ export default class TriakisAnimation {
         type: 'ambient',
         color: '#ffffff',
         intensity: 10,
-        name: 'Ambient',
       }
     ]
 
@@ -50,13 +42,7 @@ export default class TriakisAnimation {
     this.triakis = new Triakis(this);
   }
 
-  init() {
-    const {
-      enviroment,
-    } = this.manager;
-
-    this.enviroment = enviroment;
-
+  createLoadingScreen() {
     new LoadingScreen({
       wrapSelector: ".loading-screen",
       textCounterSelector: ".loading-screen__text",
@@ -76,7 +62,15 @@ export default class TriakisAnimation {
         });
       },
     });
+  }
 
+  init() {
+    const {
+      enviroment,
+    } = this.manager;
+
+    this.enviroment = enviroment;
+    this.createLoadingScreen();
     this.initScene();
   }
 }
