@@ -9,6 +9,7 @@ export default class Sizes {
     this.heightinit = height || window.innerHeight;
 
 
+    this.homeSection = document.querySelector('#home');
     this.test = document.createElement('div');
     this.test.style.position = 'fixed';
     this.test.style.top = '4rem';
@@ -23,13 +24,13 @@ export default class Sizes {
   setSizes(width, height) {
     const { innerWidth, innerHeight } = window;
     this.width = this.manualResize ? (width ?? this.widthInit) : innerWidth;
-    this.height = this.manualResize ? (height ?? this.heightinit) : innerHeight;
+    this.height = this.manualResize ? (height ?? this.heightinit) : this.homeSection.clientHeight;
     this.test.innerHTML = `
       this.height: ${this.height};
-      testHeight: ${document.querySelector('#home').clientHeight};
+      innerHeight: ${innerHeight};
     `
 
-    console.dir(window)
+    console.dir(document.body)
 
     this.aspect = this.width / this.height;
     this.pixelRatio = Math.min(window.devicePixelRatio, 2);
