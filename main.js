@@ -3,14 +3,16 @@ import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import { Observer } from "gsap/Observer";
 
 import { LazyImages } from "./src/LazyImages";
 import { triakisAnimationInit } from "./src/scene/triakisAnimationInit";
 
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, Observer);
 // ScrollTrigger.normalizeScroll({
 //   allowNestedScroll: true,
 // });
+
 
 // const lenis = new Lenis();
 // lenis.on('scroll', ScrollTrigger.update);
