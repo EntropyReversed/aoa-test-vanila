@@ -19,7 +19,8 @@ export default class Sizes {
     this.screenSizer.style.left = '0';
     this.screenSizer.style.width = '1px';
     this.screenSizer.style.height = '100vh';
-    this.screenSizer.style.background = 'red';
+    this.screenSizer.style.background = 'transparent';
+    this.screenSizer.style.pointerEvents = 'none';
     document.body.appendChild(this.screenSizer);
   }
 

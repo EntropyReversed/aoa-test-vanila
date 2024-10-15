@@ -20,13 +20,12 @@ export class Signal {
 
   subscribe(callback, order = null) {
     if (order === null) {
-      this.subscribers.add(callback);
-      return;
+      this.subscribers.add(callback); // Add at the end if no specific order or order is out of bounds
+    } else {
+      const subscribersArray = [...this.subscribers]; // Convert Set to Array for manipulation
+      subscribersArray.splice(order, 0, callback); // Insert the callback at the specific order
+      this.subscribers = new Set(subscribersArray); // Re-create the Set with the new order
     }
-
-    this.subscribers = new Set([...this.subscribers].toSpliced(order, 0, callback));
-
-    return () => this.unsubscribe(callback);
   }
 
   unsubscribe(callback) {
